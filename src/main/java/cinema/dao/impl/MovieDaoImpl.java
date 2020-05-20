@@ -20,16 +20,16 @@ public class MovieDaoImpl implements MovieDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Long itemId = (Long) session.save(movie);
+            Long movieId = (Long) session.save(movie);
             transaction.commit();
-            movie.setId(itemId);
+            movie.setId(movieId);
             LOGGER.info("The movie was successfully saved into the DB");
             return movie;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert movie entity" + e);
+            throw new DataProcessingException("Can't insert movie entity", e);
         }
     }
 
@@ -41,7 +41,7 @@ public class MovieDaoImpl implements MovieDao {
             criteriaQuery.from(Movie.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Error retrieving all movies" + e);
+            throw new DataProcessingException("Error retrieving all movies", e);
         }
     }
 }
