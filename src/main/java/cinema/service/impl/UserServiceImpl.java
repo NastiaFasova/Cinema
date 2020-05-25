@@ -6,6 +6,7 @@ import cinema.lib.Service;
 import cinema.model.User;
 import cinema.service.UserService;
 import cinema.util.HashUtil;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
     }
 }

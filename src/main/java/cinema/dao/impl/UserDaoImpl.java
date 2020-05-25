@@ -5,6 +5,7 @@ import cinema.exception.DataProcessingException;
 import cinema.lib.Dao;
 import cinema.model.User;
 import cinema.util.HibernateUtil;
+import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -42,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -53,7 +54,7 @@ public class UserDaoImpl implements UserDao {
             criteriaQuery.where(predicateOfEmail);
             LOGGER.info("The user was "
                     + "successfully retrieved from the DB by the email");
-            return session.createQuery(criteriaQuery).getSingleResult();
+            return Optional.ofNullable(session.createQuery(criteriaQuery).getSingleResult());
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the user by email", e);
         } finally {
