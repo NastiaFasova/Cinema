@@ -21,7 +21,9 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<MovieSession> criteriaQuery = builder.createQuery(MovieSession.class);
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
@@ -29,18 +31,24 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             Predicate predicateOfDate = builder.greaterThan(root.get("showTime"),
                     date.atStartOfDay());
             criteriaQuery.where(predicateOfId, predicateOfDate);
-            LOGGER.info("All the available movieSession were "
+            LOGGER.info("All the available movieSessions were "
                     + "successfully retrieved from the DB");
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all available MovieSession", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(movieSession);
             transaction.commit();
@@ -51,6 +59,10 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert movieSession entity", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
