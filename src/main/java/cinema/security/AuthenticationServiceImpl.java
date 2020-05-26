@@ -4,6 +4,7 @@ import cinema.exception.AuthenticationException;
 import cinema.lib.Inject;
 import cinema.lib.Service;
 import cinema.model.User;
+import cinema.service.ShoppingCartService;
 import cinema.service.UserService;
 import cinema.util.HashUtil;
 
@@ -12,6 +13,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private ShoppingCartService shoppingCartService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -30,6 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         newUser.setEmail(email);
         newUser.setPassword(password);
         userService.add(newUser);
+        shoppingCartService.registerNewShoppingCart(newUser);
         return newUser;
     }
 }
