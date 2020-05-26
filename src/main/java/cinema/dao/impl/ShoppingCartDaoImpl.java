@@ -48,7 +48,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "LEFT JOIN FETCH s.tickets t where s.user =: user", ShoppingCart.class);
             LOGGER.info("The shoppingCart was successfully retrieved by it user");
             query.setParameter("user", user);
-            return query.getSingleResult();
+            return query.uniqueResult();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the shoppingCart by user", e);
         } finally {
