@@ -7,13 +7,10 @@ import cinema.model.MovieSession;
 import cinema.util.HibernateUtil;
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
@@ -24,16 +21,13 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<MovieSession> criteriaQuery = builder.createQuery(MovieSession.class);
-            Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
-            Predicate predicateOfId = builder.equal(root.get("movie"), movieId);
-            Predicate predicateOfDate = builder.greaterThan(root.get("showTime"),
-                    date.atStartOfDay());
-            criteriaQuery.where(predicateOfId, predicateOfDate);
+            Query<MovieSession> query = session.createQuery("from MovieSession "
+                    + "where movie.id = :movieId and showTime = : showTime", MovieSession.class);
+            query.setParameter("movieId", movieId);
+            query.setParameter("showTime", date.atStartOfDay());
             LOGGER.info("All the available movieSessions were "
                     + "successfully retrieved from the DB");
-            return session.createQuery(criteriaQuery).getResultList();
+            return query.list();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all available MovieSession", e);
         } finally {

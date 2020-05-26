@@ -6,13 +6,10 @@ import cinema.lib.Dao;
 import cinema.model.User;
 import cinema.util.HibernateUtil;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -47,14 +44,11 @@ public class UserDaoImpl implements UserDao {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
-            Root<User> root = criteriaQuery.from(User.class);
-            Predicate predicateOfEmail = builder.equal(root.get("email"), email);
-            criteriaQuery.where(predicateOfEmail);
+            Query<User> query = session.createQuery("from User where email = :email", User.class);
+            query.setParameter("email", email);
             LOGGER.info("The user was "
                     + "successfully retrieved from the DB by the email");
-            return Optional.ofNullable(session.createQuery(criteriaQuery).getSingleResult());
+            return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the user by email", e);
         } finally {
