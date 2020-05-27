@@ -7,15 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shopping_cart")
-public class ShoppingCart {
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,9 +22,7 @@ public class ShoppingCart {
     private List<Ticket> tickets = new ArrayList<>();
     private LocalDateTime orderDate;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @ManyToOne
     private User user;
 
     public Long getId() {
@@ -63,8 +59,7 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCart{"
-                + "id=" + id
+        return "Order{" + "id=" + id
                 + ", tickets=" + tickets
                 + ", orderDate=" + orderDate
                 + ", user=" + user + '}';

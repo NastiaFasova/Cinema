@@ -3,17 +3,16 @@ import cinema.model.CinemaHall;
 import cinema.model.Movie;
 import cinema.model.MovieSession;
 import cinema.model.ShoppingCart;
-import cinema.model.Ticket;
 import cinema.model.User;
 import cinema.service.CinemaHallService;
 import cinema.service.MovieService;
 import cinema.service.MovieSessionService;
+import cinema.service.OrderService;
 import cinema.service.ShoppingCartService;
 import cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 public class Main {
     private static Injector injector = Injector.getInstance("cinema");
@@ -29,14 +28,12 @@ public class Main {
         movieService.add(firstMovie);
         movieService.add(secondMovie);
         movieService.add(thirdMovie);
-
         movieService.getAll().forEach(System.out::println);
 
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(100);
-
         CinemaHallService cinemaHallService = (CinemaHallService)
                 injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
@@ -61,20 +58,16 @@ public class Main {
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
         System.out.println(userService.findByEmail("123"));
-        Ticket ticket = new Ticket();
-        Ticket ticket2 = new Ticket();
-        ticket.setMovieSession(firstMovieSession);
-        ticket2.setMovieSession(firstMovieSession);
-        ticket.setUser(user);
-        ticket2.setUser(user);
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setTickets(List.of(ticket, ticket2));
-        shoppingCart.setOrderDate(LocalDateTime.now());
-        shoppingCart.setUser(user);
+
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(firstMovieSession, user);
-        System.out.println(shoppingCartService.getByUser(user));
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        orderService.completeOrder(shoppingCart.getTickets(), user);
+        System.out.println(orderService.getOrderHistory(user));
+        System.out.println(shoppingCart);
     }
 }
