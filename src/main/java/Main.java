@@ -8,6 +8,7 @@ import cinema.model.User;
 import cinema.service.CinemaHallService;
 import cinema.service.MovieService;
 import cinema.service.MovieSessionService;
+import cinema.service.OrderService;
 import cinema.service.ShoppingCartService;
 import cinema.service.UserService;
 import java.time.LocalDate;
@@ -76,5 +77,9 @@ public class Main {
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(firstMovieSession, user);
         System.out.println(shoppingCartService.getByUser(user));
+
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        System.out.println(orderService.completeOrder(shoppingCart.getTickets(), user));
+        System.out.println(orderService.getOrderHistory(user));
     }
 }
