@@ -16,7 +16,7 @@ import java.time.LocalTime;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-    private static final AnnotationConfigApplicationContext CONTEXT
+    private static final AnnotationConfigApplicationContext context
             = new AnnotationConfigApplicationContext(AppConfig.class);
 
     public static void main(String[] args) {
@@ -26,7 +26,7 @@ public class Main {
         firstMovie.setTitle("Fast and Furious");
         secondMovie.setTitle("War of Stars");
         thirdMovie.setTitle("Run, Forest");
-        MovieService movieService = CONTEXT.getBean(MovieService.class);
+        MovieService movieService = context.getBean(MovieService.class);
         movieService.add(firstMovie);
         movieService.add(secondMovie);
         movieService.add(thirdMovie);
@@ -36,7 +36,7 @@ public class Main {
         firstCinemaHall.setCapacity(100);
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(100);
-        CinemaHallService cinemaHallService = CONTEXT.getBean(CinemaHallService.class);
+        CinemaHallService cinemaHallService = context.getBean(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
         cinemaHallService.getAll().forEach(System.out::println);
@@ -47,7 +47,7 @@ public class Main {
         LocalDate date = LocalDate.of(2020, 5, 21);
         firstMovieSession.setShowTime(LocalDateTime.of(LocalDate.of(2020, 5, 21),
                 LocalTime.now()));
-        MovieSessionService movieSessionService = CONTEXT.getBean(MovieSessionService.class);
+        MovieSessionService movieSessionService = context.getBean(MovieSessionService.class);
         movieSessionService.add(firstMovieSession);
         movieSessionService.findAvailableSessions(firstMovieSession.getId(),
                 date).forEach(System.out::println);
@@ -55,17 +55,17 @@ public class Main {
         User user = new User();
         user.setEmail("123");
         user.setPassword("123");
-        UserService userService = CONTEXT.getBean(UserService.class);
+        UserService userService = context.getBean(UserService.class);
         userService.add(user);
         System.out.println(userService.findByEmail("123"));
 
         ShoppingCartService shoppingCartService
-                = CONTEXT.getBean(ShoppingCartService.class);
+                = context.getBean(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(firstMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
 
-        OrderService orderService = CONTEXT.getBean(OrderService.class);
+        OrderService orderService = context.getBean(OrderService.class);
         orderService.completeOrder(shoppingCart.getTickets(), user);
         System.out.println(orderService.getOrderHistory(user));
         System.out.println(shoppingCart);
