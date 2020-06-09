@@ -1,4 +1,4 @@
-import cinema.lib.Injector;
+import cinema.config.AppConfig;
 import cinema.model.CinemaHall;
 import cinema.model.Movie;
 import cinema.model.MovieSession;
@@ -13,9 +13,11 @@ import cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-    private static Injector injector = Injector.getInstance("cinema");
+    private static final AnnotationConfigApplicationContext CONTEXT
+            = new AnnotationConfigApplicationContext(AppConfig.class);
 
     public static void main(String[] args) {
         Movie firstMovie = new Movie();
@@ -24,7 +26,7 @@ public class Main {
         firstMovie.setTitle("Fast and Furious");
         secondMovie.setTitle("War of Stars");
         thirdMovie.setTitle("Run, Forest");
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+        MovieService movieService = CONTEXT.getBean(MovieService.class);
         movieService.add(firstMovie);
         movieService.add(secondMovie);
         movieService.add(thirdMovie);
@@ -34,8 +36,7 @@ public class Main {
         firstCinemaHall.setCapacity(100);
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(100);
-        CinemaHallService cinemaHallService = (CinemaHallService)
-                injector.getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService = CONTEXT.getBean(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
         cinemaHallService.getAll().forEach(System.out::println);
@@ -46,8 +47,7 @@ public class Main {
         LocalDate date = LocalDate.of(2020, 5, 21);
         firstMovieSession.setShowTime(LocalDateTime.of(LocalDate.of(2020, 5, 21),
                 LocalTime.now()));
-        MovieSessionService movieSessionService = (MovieSessionService)
-                injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService = CONTEXT.getBean(MovieSessionService.class);
         movieSessionService.add(firstMovieSession);
         movieSessionService.findAvailableSessions(firstMovieSession.getId(),
                 date).forEach(System.out::println);
@@ -55,17 +55,17 @@ public class Main {
         User user = new User();
         user.setEmail("123");
         user.setPassword("123");
-        UserService userService = (UserService) injector.getInstance(UserService.class);
+        UserService userService = CONTEXT.getBean(UserService.class);
         userService.add(user);
         System.out.println(userService.findByEmail("123"));
 
         ShoppingCartService shoppingCartService
-                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+                = CONTEXT.getBean(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(firstMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
 
-        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        OrderService orderService = CONTEXT.getBean(OrderService.class);
         orderService.completeOrder(shoppingCart.getTickets(), user);
         System.out.println(orderService.getOrderHistory(user));
         System.out.println(shoppingCart);
