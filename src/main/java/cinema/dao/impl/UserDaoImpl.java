@@ -63,4 +63,22 @@ public class UserDaoImpl implements UserDao {
             }
         }
     }
+
+    @Override
+    public Optional<User> get(Long id) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            User user = session.get(User.class, id);
+            LOGGER.info("The user was "
+                    + "successfully retrieved from the DB by the ID");
+            return Optional.ofNullable(user);
+        } catch (Exception e) {
+            throw new DataProcessingException("Error retrieving the user by ID", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

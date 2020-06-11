@@ -4,7 +4,9 @@ import cinema.dao.MovieSessionDao;
 import cinema.exception.DataProcessingException;
 import cinema.model.MovieSession;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,10 +29,14 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query<MovieSession> query = session.createQuery("from MovieSession "
-                    + "where movie.id = :movieId and showTime = : showTime", MovieSession.class);
+            Query<MovieSession> query = session.createQuery(
+                    "FROM MovieSession ms JOIN FETCH ms.movie m JOIN FETCH ms.cinemaHall c "
+                            + "where m.id = :movieId "
+                            + "and ms.showTime > :dateStart "
+                            + "and ms.showTime < :dateEnd", MovieSession.class);
             query.setParameter("movieId", movieId);
-            query.setParameter("showTime", date.atStartOfDay());
+            query.setParameter("dateStart", date.atStartOfDay());
+            query.setParameter("dateEnd", date.atTime(LocalTime.MAX));
             LOGGER.info("All the available movieSessions were "
                     + "successfully retrieved from the DB");
             return query.list();
@@ -59,6 +65,23 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert movieSession entity", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public Optional<MovieSession> get(Long id) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            MovieSession movieSession = session.get(MovieSession.class, id);
+            LOGGER.info("The shoppingCart was successfully retrieved by its ID");
+            return Optional.ofNullable(movieSession);
+        } catch (Exception e) {
+            throw new DataProcessingException("Error retrieving the shoppingCart by user", e);
         } finally {
             if (session != null) {
                 session.close();

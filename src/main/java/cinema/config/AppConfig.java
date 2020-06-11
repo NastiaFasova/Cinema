@@ -1,15 +1,9 @@
 package cinema.config;
 
-import cinema.model.CinemaHall;
-import cinema.model.Movie;
-import cinema.model.MovieSession;
-import cinema.model.Order;
-import cinema.model.ShoppingCart;
-import cinema.model.Ticket;
-import cinema.model.User;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,11 +15,14 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 @PropertySource("classpath:db.properties")
 @ComponentScan(basePackages = {
         "cinema.dao",
-        "cinema.service"
+        "cinema.service",
+        "cinema.security",
+        "cinema.model.mapper"
 })
 public class AppConfig {
     private final Environment env;
 
+    @Autowired
     public AppConfig(Environment env) {
         this.env = env;
     }
@@ -33,8 +30,8 @@ public class AppConfig {
     @Bean
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl(env.getProperty("db.url"));
         dataSource.setDriverClassName(env.getProperty("db.driver"));
+        dataSource.setUrl(env.getProperty("db.url"));
         dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
@@ -47,6 +44,7 @@ public class AppConfig {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         sessionFactory.setHibernateProperties(properties);
         sessionFactory.setPackagesToScan("cinema.model");
         return sessionFactory;
