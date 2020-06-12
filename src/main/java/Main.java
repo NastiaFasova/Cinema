@@ -49,8 +49,6 @@ public class Main {
                 LocalTime.now()));
         MovieSessionService movieSessionService = context.getBean(MovieSessionService.class);
         movieSessionService.add(firstMovieSession);
-        movieSessionService.findAvailableSessions(firstMovieSession.getId(),
-                date).forEach(System.out::println);
 
         User user = new User();
         user.setEmail("123");
@@ -69,5 +67,7 @@ public class Main {
         orderService.completeOrder(shoppingCart.getTickets(), user);
         System.out.println(orderService.getOrderHistory(user));
         System.out.println(shoppingCart);
+
+        System.out.println(userService.get(1L));
     }
 }

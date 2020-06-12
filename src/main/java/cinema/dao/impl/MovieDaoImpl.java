@@ -4,6 +4,7 @@ import cinema.dao.MovieDao;
 import cinema.exception.DataProcessingException;
 import cinema.model.Movie;
 import java.util.List;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -54,6 +55,25 @@ public class MovieDaoImpl implements MovieDao {
             return query.list();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all movies", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public Optional<Movie> getByTitle(String title) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            Query<Movie> query = session.createQuery("from Movie m where m.title =: title",
+                    Movie.class);
+            query.setParameter("title", title);
+            LOGGER.info("CinemaHall was successfully retrieved from the DB");
+            return Optional.ofNullable(query.uniqueResult());
+        } catch (Exception e) {
+            throw new DataProcessingException("Error retrieving the cinemaHall", e);
         } finally {
             if (session != null) {
                 session.close();

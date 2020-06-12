@@ -4,6 +4,7 @@ import cinema.dao.ShoppingCartDao;
 import cinema.exception.DataProcessingException;
 import cinema.model.ShoppingCart;
 import cinema.model.User;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -46,15 +47,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     }
 
     @Override
-    public ShoppingCart getByUser(User user) {
+    public Optional<ShoppingCart> getByUser(User user) {
         Session session = null;
         try {
             session = sessionFactory.openSession();
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart s "
                     + "LEFT JOIN FETCH s.tickets t where s.user =: user", ShoppingCart.class);
-            LOGGER.info("The shoppingCart was successfully retrieved by it user");
+            LOGGER.info("The shoppingCart was successfully retrieved by its user");
             query.setParameter("user", user);
-            return query.uniqueResult();
+            return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the shoppingCart by user", e);
         } finally {
