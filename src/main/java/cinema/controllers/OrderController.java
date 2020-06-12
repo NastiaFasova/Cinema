@@ -9,8 +9,8 @@ import cinema.model.mapper.OrderMapper;
 import cinema.service.OrderService;
 import cinema.service.ShoppingCartService;
 import cinema.service.UserService;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,10 +46,8 @@ public class OrderController {
     public List<OrderResponseDto> getAll(@RequestParam (name = "userId") Long userId) {
         User user = userService.get(userId);
         List<Order> orders = orderService.getOrderHistory(user);
-        List<OrderResponseDto> ordersResponseDto = new ArrayList<>();
-        for (Order order : orders) {
-            ordersResponseDto.add(orderMapper.getOrderResponseDto(order));
-        }
-        return ordersResponseDto;
+        return orders.stream()
+                .map(orderMapper::getOrderResponseDto)
+                .collect(Collectors.toList());
     }
 }

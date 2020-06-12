@@ -4,8 +4,8 @@ import cinema.model.Movie;
 import cinema.model.dto.MovieDto;
 import cinema.model.mapper.MovieMapper;
 import cinema.service.MovieService;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +32,8 @@ public class MovieController {
     @GetMapping
     public List<MovieDto> getAll() {
         List<Movie> movies = movieService.getAll();
-        List<MovieDto> moviesDto = new ArrayList<>();
-        for (Movie movie : movies) {
-            moviesDto.add(movieMapper.getMovieResponseDto(movie));
-        }
-        return moviesDto;
-
+        return movies.stream()
+                .map(movieMapper::getMovieResponseDto)
+                .collect(Collectors.toList());
     }
 }

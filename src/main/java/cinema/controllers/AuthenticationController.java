@@ -20,5 +20,4 @@ public class AuthenticationController {
     public void addUser(@RequestBody UserRequestDto userRequestDto) throws AuthenticationException {
         authenticationService.register(userRequestDto.getEmail(), userRequestDto.getPassword());
     }
-
 }
