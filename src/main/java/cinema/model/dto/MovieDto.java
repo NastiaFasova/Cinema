@@ -1,8 +1,15 @@
 package cinema.model.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class MovieDto {
+    @NotNull
     private Long id;
+    @NotNull
+    @Size(min = 1, max = 40)
     private String title;
+    @Size(min = 20, max = 200)
     private String description;
 
     public Long getId() {

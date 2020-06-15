@@ -1,8 +1,15 @@
 package cinema.model.dto.request;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class MovieSessionRequestDto {
+    @NotNull
+    @Size(min = 1, max = 40)
     private String movieTitle;
+    @NotNull
     private Long cinemaHallId;
+    @NotNull
     private String showTime;
 
     public String getMovieTitle() {
