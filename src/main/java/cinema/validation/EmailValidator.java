@@ -5,10 +5,6 @@ import javax.validation.ConstraintValidatorContext;
 
 public class EmailValidator implements
         ConstraintValidator<EmailValidation, String> {
-    @Override
-    public void initialize(EmailValidation emailValidation) {
-
-    }
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {

@@ -8,10 +8,6 @@ public class PasswordMatchValidator implements
         ConstraintValidator<PasswordMatch, UserRequestDto> {
 
     @Override
-    public void initialize(PasswordMatch constraintAnnotation) {
-    }
-
-    @Override
     public boolean isValid(UserRequestDto userRequestDto,
                            ConstraintValidatorContext constraintValidatorContext) {
         String password = userRequestDto.getPassword();

@@ -2,13 +2,10 @@ package cinema.model.dto.request;
 
 import cinema.validation.EmailValidation;
 import cinema.validation.PasswordMatch;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @PasswordMatch
 public class UserRequestDto {
-    @NotNull
-    @Size(min = 6, max = 50)
     @EmailValidation
     private String email;
     @Size(min = 6)
