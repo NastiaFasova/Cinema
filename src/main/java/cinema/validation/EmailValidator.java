@@ -9,6 +9,6 @@ public class EmailValidator implements
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
         return email != null && email.matches("^(.+)@(.+)$")
-                && (email.length() > 6) && (email.length() < 14);
+                && (email.length() > 6) && (email.length() < 24);
     }
 }

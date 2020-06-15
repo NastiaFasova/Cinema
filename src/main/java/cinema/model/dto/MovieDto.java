@@ -4,9 +4,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class MovieDto {
-    @NotNull
+    @NotNull(message = "MovieId can't be null")
     private Long id;
-    @NotNull
+    @NotNull(message = "MovieTitle can't be null")
     @Size(min = 1, max = 40)
     private String title;
     @Size(min = 20, max = 200)

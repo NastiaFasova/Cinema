@@ -4,7 +4,7 @@ import cinema.validation.EmailValidation;
 import cinema.validation.PasswordMatch;
 import javax.validation.constraints.Size;
 
-@PasswordMatch
+@PasswordMatch()
 public class UserRequestDto {
     @EmailValidation
     private String email;

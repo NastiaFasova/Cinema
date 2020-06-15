@@ -5,9 +5,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CinemaHallDto {
-    @NotNull
+    @NotNull(message = "CinemaHallId can't be null")
     private Long id;
-    @NotNull
+    @NotNull(message = "Capacity of a cinemaHall can't be null")
     @Min(50)
     private int capacity;
     @Size(min = 10, max = 150)
