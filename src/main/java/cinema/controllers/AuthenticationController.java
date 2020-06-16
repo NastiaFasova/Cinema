@@ -3,6 +3,7 @@ package cinema.controllers;
 import cinema.exception.AuthenticationException;
 import cinema.model.dto.request.UserRequestDto;
 import cinema.security.AuthenticationService;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public void addUser(@RequestBody UserRequestDto userRequestDto) throws AuthenticationException {
+    public void addUser(@RequestBody @Valid UserRequestDto userRequestDto)
+            throws AuthenticationException {
         authenticationService.register(userRequestDto.getEmail(), userRequestDto.getPassword());
     }
 }
