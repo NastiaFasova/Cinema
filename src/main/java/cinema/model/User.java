@@ -1,10 +1,12 @@
 package cinema.model;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -13,22 +15,22 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @ManyToMany
+    private Set<Role> roles;
     @Column(unique = true)
     private String email;
     private String password;
-    private byte[] salt;
-
-    public byte[] getSalt() {
-        return salt;
-    }
-
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
-    }
 
     public Long getId() {
         return id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void setId(Long id) {
@@ -54,6 +56,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" + "id=" + id
+                + ", roles=" + roles
                 + ", email='" + email + '\''
                 + ", password='" + password + '\'' + '}';
     }
