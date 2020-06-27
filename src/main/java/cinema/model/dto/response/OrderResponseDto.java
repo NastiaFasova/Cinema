@@ -17,24 +17,12 @@ public class OrderResponseDto {
         this.id = id;
     }
 
-    public List<Long> getTicketsId() {
-        return ticketsId;
-    }
-
     public void setTicketsId(List<Long> ticketsId) {
         this.ticketsId = ticketsId;
     }
 
-    public String getOrderDate() {
-        return orderDate;
-    }
-
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public void setUserId(Long userId) {

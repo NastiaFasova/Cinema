@@ -27,6 +27,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getByTitle(String title) {
-        return movieDao.getByTitle(title).get();
+        return movieDao.getByTitle(title).orElseThrow();
     }
 }

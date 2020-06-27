@@ -48,9 +48,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart s "
                     + "LEFT JOIN FETCH s.tickets t where s.user =: user", ShoppingCart.class);
             LOGGER.info("The shoppingCart was successfully retrieved by its user");
@@ -58,10 +56,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the shoppingCart by user", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 

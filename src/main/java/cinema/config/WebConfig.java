@@ -10,11 +10,4 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = {"cinema.controllers"})
 public class WebConfig {
-    public InternalResourceViewResolver getResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setViewClass(JstlView.class);
-        resolver.setPrefix("/WEB_INF/views/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
 }
