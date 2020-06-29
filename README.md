@@ -52,7 +52,7 @@ EmailValidation and PasswordValidation will also make an app more secure.
 It also should be pointed out that it implements the principle of layered architecture.
 By the way, such layers as DAO and, Service and Controller are absent.
 
-I used Hibernate and implemented mapping of all our entities into the DataBase and vicar verse on the DAO layer,
+I used Hibernate and implemented mapping of all our entities into the DataBase and vice verse on the DAO layer,
 while on the Service layer all the business logic is concentrated.
 
 Not the less important feature of my Cinema is that it's a REST-ful application.
