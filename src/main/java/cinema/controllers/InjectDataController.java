@@ -24,7 +24,7 @@ public class InjectDataController {
         Role userRole = new Role();
         userRole.setRoleName(Role.RoleName.USER);
         User user = new User();
-        user.setEmail("fasovaaa@ukr.net");
+        user.setEmail("user@ukr.net");
         user.setPassword("1111");
         user.setRoles(Set.of(userRole));
         roleService.add(userRole);
@@ -33,7 +33,7 @@ public class InjectDataController {
         Role adminRole = new Role();
         adminRole.setRoleName(Role.RoleName.ADMIN);
         User admin = new User();
-        admin.setEmail("fasovaaa@gmail.com");
+        admin.setEmail("admin@gmail.com");
         admin.setPassword("9999");
         admin.setRoles(Set.of(adminRole));
         roleService.add(adminRole);
