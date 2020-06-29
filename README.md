@@ -113,11 +113,11 @@ The second one – with an ADMIN role (login = admin@gmail.com, password = 9999)
 After that, with help of Postman, you may test any function.
 Add the Content-type : application/json into the Header.
 
-[Configuring_postman](/images/configure_postman.png)
+![Configuring_postman](/images/configure_postman.png)
 
 Don't forget to fill the BODY for POST methods.
 
-[Configuring_post-method](/images/configure_post-method.png)
+![Configuring_post-method](/images/configure_post-method.png)
 <hr>
 
 # <a name="authors"></a>Authors
