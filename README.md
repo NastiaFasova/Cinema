@@ -61,7 +61,7 @@ the data format that the client needs may change.
 
 # <a name="structure"></a>Project structure
 
-* Java 13
+* Java 11
 * Hibernate 5.4.5.Final
 * Spring 5.2.6.RELEASE
 * Spring Security 5.3.3.RELEASE
@@ -74,7 +74,7 @@ the data format that the client needs may change.
 # <a name="for_developer"></a>For developer
 #### To run and test this project you need to install:
 
-* [Java 13](https://www.oracle.com/java/technologies/javase-jdk13-downloads.html)
+* [Java 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 * [Tomcat](https://tomcat.apache.org/download-90.cgi)
 * [MySQL 8 ](https://www.mysql.com/downloads/)
 * [Postman](https://www.postman.com/downloads/)
@@ -85,7 +85,7 @@ Add this project to your IDE as Maven project.
 
 Configure Tomcat : 
 * Add artifact
-* Add Java SDK 13
+* Add Java SDK 11
 
 Change a path in src.main.java.resources.log4j.properties. It has to reach your logFile.
 
