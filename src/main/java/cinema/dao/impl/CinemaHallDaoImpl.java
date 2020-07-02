@@ -58,18 +58,12 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
 
     @Override
     public Optional<CinemaHall> get(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             CinemaHall cinemaHall = session.get(CinemaHall.class, id);
             LOGGER.info("CinemaHall was successfully retrieved from the DB");
             return Optional.ofNullable(cinemaHall);
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the cinemaHall", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }

@@ -58,9 +58,7 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public Optional<Movie> getByTitle(String title) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             Query<Movie> query = session.createQuery("from Movie m where m.title =: title",
                     Movie.class);
             query.setParameter("title", title);
@@ -68,10 +66,6 @@ public class MovieDaoImpl implements MovieDao {
             return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the cinemaHall", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }

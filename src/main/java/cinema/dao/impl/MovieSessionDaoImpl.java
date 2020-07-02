@@ -25,7 +25,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     }
 
     @Override
-    public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
+    public List<MovieSession> getAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = sessionFactory.openSession()) {
             Query<MovieSession> query = session.createQuery(
                     "from MovieSession ms JOIN FETCH ms.movie m JOIN FETCH ms.cinemaHall c "
