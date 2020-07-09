@@ -24,7 +24,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order create(Order order) {
+    public Order add(Order order) {
         Transaction transaction = null;
         Session session = null;
         try {
@@ -48,9 +48,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrderHistory(User user) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             Query<Order> query = session.createQuery("from Order o "
                     + "LEFT JOIN FETCH o.tickets t where o.user = :user", Order.class);
             query.setParameter("user", user);
@@ -58,10 +56,6 @@ public class OrderDaoImpl implements OrderDao {
             return query.list();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all orders", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }

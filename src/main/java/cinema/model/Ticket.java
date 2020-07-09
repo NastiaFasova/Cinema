@@ -28,10 +28,6 @@ public class Ticket {
         this.id = id;
     }
 
-    public MovieSession getMovieSession() {
-        return movieSession;
-    }
-
     public void setMovieSession(MovieSession movieSession) {
         this.movieSession = movieSession;
     }

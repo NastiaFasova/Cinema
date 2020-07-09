@@ -25,12 +25,10 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     }
 
     @Override
-    public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
+    public List<MovieSession> getAvailableSessions(Long movieId, LocalDate date) {
+        try (Session session = sessionFactory.openSession()) {
             Query<MovieSession> query = session.createQuery(
-                    "FROM MovieSession ms JOIN FETCH ms.movie m JOIN FETCH ms.cinemaHall c "
+                    "from MovieSession ms JOIN FETCH ms.movie m JOIN FETCH ms.cinemaHall c "
                             + "where m.id = :movieId "
                             + "and ms.showTime > :dateStart "
                             + "and ms.showTime < :dateEnd", MovieSession.class);
@@ -42,10 +40,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             return query.list();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all available MovieSession", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -74,18 +68,12 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public Optional<MovieSession> get(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             MovieSession movieSession = session.get(MovieSession.class, id);
             LOGGER.info("The shoppingCart was successfully retrieved by its ID");
             return Optional.ofNullable(movieSession);
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving the shoppingCart by user", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }

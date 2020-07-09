@@ -10,7 +10,4 @@ public class OrderRequestDto {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }

@@ -33,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User userFromDb = userService.findByEmail(email);
+        User userFromDb = userService.getByEmail(email);
         if (userFromDb != null && passwordEncoder.matches(password, userFromDb.getPassword())) {
             return userFromDb;
         }

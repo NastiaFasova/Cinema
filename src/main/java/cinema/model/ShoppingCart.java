@@ -41,18 +41,6 @@ public class ShoppingCart {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
-    }
-
     public User getUser() {
         return user;
     }
