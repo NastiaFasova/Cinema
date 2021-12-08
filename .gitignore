@@ -1,4 +1,5 @@
+backend/.idea/*
 .idea/*
-*.iml
-/target*
-logs/*
+backend/*.iml
+backend/target*
+backend/logs/*
