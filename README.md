@@ -50,7 +50,7 @@ it will be shown and the time of broadcasting
 | /login                     |      GET      |         Login             |          all            |
 | /register                  |      GET      |        Register           |          all            |
 | /cinema-halls              |      GET      |     Display all           |          all            |
-|                            |               |     cinema-halls          |                         |
+                                                 cinema-halls                                   
 | /cinema-halls              |     POST      |  Add new cinema-hall      |         ADMIN           |
 | /movies                    |      GET      |  Display all movies       |          all            |
 | /movies                    |     POST      |    Add new movie          |         ADMIN           |
