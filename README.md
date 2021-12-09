@@ -44,6 +44,30 @@ The main ones are listed below.
 * add new movie-sessions including the information about a film, cinema-hall 
 it will be shown and the time of broadcasting
 
+#### Table with endpoints and their description:
+|   Endpoint                 |   Function    |        Action             |          Role           |
+| -------------------------- |:-------------:| -------------------------:|-------------------------|
+| /login                     |      GET      |         Login             |          all            |
+| /register                  |      GET      |        Register           |          all            |
+| /cinema-halls              |      GET      |     Display all           |          all            |
+|                            |               |     cinema-halls          |                         |
+| /cinema-halls              |     POST      |  Add new cinema-hall      |         ADMIN           |
+| /movies                    |      GET      |  Display all movies       |          all            |
+| /movies                    |     POST      |    Add new movie          |         ADMIN           |
+| /movie-sessions/available/ |      GET      |   Display movie-sessions  |          all            |
+|   movieId=%&date=%         |               | (of the film, on the date)|                         |
+| /movie-sessions            |     POST      |   All new movies-session  |         ADMIN           |
+| /orders                    |      GET      |  Get all orders of logged |          USER           |
+|                            |               |           in user         |                         |
+| /orders/complete           |     POST      |   Complete new order      |          USER           |
+| /shopping-carts/by-user    |      GET      |   Get shopping-cart by    |    Not used on pages,   |
+|                            |               |   user-id(logged in user) | just for authentication |
+| /shopping-carts/           |     POST      |      User buys ticket     |          USER           |
+|          add-movie-session |               |    for a movie-session    |                         |
+| /users/by-email            |      GET      |    Get user by email      |     Not user on pages,  |
+|                            |               |                           |  (for authentication)   |
+
+
 
 In order to add some security and give the access to appropriate resources,
 depending on the role,
