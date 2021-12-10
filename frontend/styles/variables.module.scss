@@ -1,0 +1,16 @@
+/* variables.module.scss */
+$primaryColor: #0ae49d;
+$textColor: #222222;
+$white: #fff;
+$defaultRadius: 5px;
+$grey: #c6bfbf;
+$defaultTransition: 0.2s all;
+
+:export {
+  primaryColor: $primaryColor;
+  textColor: $textColor;
+  white: $white;
+  grey: $grey;
+  defaultRadius: $defaultRadius;
+  defaultTransition: $defaultTransition;
+}
