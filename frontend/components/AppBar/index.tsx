@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 const AppBar = () => {
 
   const router = useRouter();
-  console.log('router')
 
   return (
     <Container>

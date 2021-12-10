@@ -4,19 +4,16 @@ import LoginForm from '../../components/Forms/LoginForm'
 import RegisterForm from '../../components/Forms/RegisterForm'
 import { AuthFormsType } from '../../types'
 import NotFoundPage from '../404'
+import { useRouter } from 'next/router'
 
 type MoviePageProps = {
   type: AuthFormsType;
 }
 
 const MoviePage: NextPage<MoviePageProps> = ({ type }) => {
-  if (type === 'login') {
-    return <LoginForm />
-  } else if (type === 'register') {
-    return <RegisterForm />
-  } else {
-    return <NotFoundPage />;
-  }
+  const router = useRouter();
+  console.log('router', router.query.slug)
+  return <div />
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

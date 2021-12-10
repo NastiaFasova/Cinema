@@ -11,6 +11,7 @@ export interface IFilmLink {
 }
 
 export interface IFilm {
+  id: number;
   Title: string;
   Year: number;
   Rated: string;
