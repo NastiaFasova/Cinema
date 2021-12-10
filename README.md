@@ -44,6 +44,25 @@ The main ones are listed below.
 * add new movie-sessions including the information about a film, cinema-hall 
 it will be shown and the time of broadcasting
 
+#### Table with endpoints and their description:
+|   Endpoint                                 |   Function    |                    Action                           |          Role           |
+| ------------------------------------------ |:-------------:| ---------------------------------------------------:|-------------------------|
+| /login                                     |      GET      |  Login                                              |          all            |
+| /register                                  |      GET      |  Register                                           |          all            |
+| /cinema-halls                              |      GET      |  Display all cinema-halls                           |          all            |
+| /cinema-halls                              |     POST      |  Add new cinema-hall                                |         ADMIN           |
+| /movies                                    |      GET      |  Display all movies                                 |          all            |
+| /movies                                    |     POST      |  Add new movie                                      |         ADMIN           |
+| /movie-sessions/available/movieId=%&date=% |      GET      |  Display movie-sessions (of the film, on the date)  |          all            |
+| /movie-sessions                            |     POST      |  Add new movies-session                             |         ADMIN           |
+| /orders                                    |      GET      |  Get all orders of logged in user                   |          USER           |
+| /orders/complete                           |     POST      |  Complete new order                                 |          USER           |
+| /shopping-carts/by-user                    |      GET      |  Get shopping-cart by user-id(logged in user)       |    For authentication   |
+| /shopping-carts/add-movie-session          |     POST      |  User buys ticket for a movie-session               |          USER           |
+| /users/by-email                            |      GET      |  Get user by email                                  |    For authentication   |
+
+
+
 
 In order to add some security and give the access to appropriate resources,
 depending on the role,
