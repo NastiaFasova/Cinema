@@ -31,5 +31,11 @@ export interface IFilm {
   imdbVotes: string;
 }
 
+export interface ICinemaHall {
+  id: number;
+  capacity: number;
+  name: string;
+  description: string;
+}
 
 export type AuthFormsType = 'login' | 'register';
