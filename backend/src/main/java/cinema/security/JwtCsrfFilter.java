@@ -1,6 +1,8 @@
 package cinema.security;
 
 import cinema.exception.JwtException;
+import io.jsonwebtoken.Jwts;
+
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.InvalidCsrfTokenException;

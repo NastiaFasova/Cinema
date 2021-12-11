@@ -1,5 +1,7 @@
 package cinema.model;
 
+
+import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "shopping_cart")
+@Data
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,33 +31,4 @@ public class ShoppingCart {
     @MapsId
     @JoinColumn(name = "id")
     private User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "ShoppingCart{"
-                + "id=" + id
-                + ", tickets=" + tickets
-                + ", orderDate=" + orderDate
-                + ", user=" + user + '}';
-    }
 }

@@ -1,21 +1,14 @@
 package cinema.model.dto.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 public class ShoppingCartResponseDto {
     private Long id;
     private List<Long> ticketsId = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTicketsId(List<Long> ticketsId) {
-        this.ticketsId = ticketsId;
-    }
 }
