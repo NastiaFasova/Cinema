@@ -1,4 +1,9 @@
+backend/.idea/*
 .idea/*
-*.iml
-/target*
-logs/*
+backend/*.iml
+backend/target*
+backend/logs/*
+
+# Front part
+node_modules
+
