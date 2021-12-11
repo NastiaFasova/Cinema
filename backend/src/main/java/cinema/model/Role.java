@@ -1,5 +1,7 @@
 package cinema.model;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role")
+@Data
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,22 +21,6 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(unique = true)
     private RoleName roleName;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public RoleName getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(RoleName roleName) {
-        this.roleName = roleName;
-    }
 
     public enum RoleName {
         USER, ADMIN

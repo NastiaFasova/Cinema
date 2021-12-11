@@ -16,14 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
+
     @Autowired
     private JwtTokenRepository jwtTokenRepository;
 
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and()
-                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
+                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, getResolver()), CsrfFilter.class)
                 .csrf().ignoringAntMatchers("/**")
                 .and()
                 .authorizeRequests()
@@ -54,18 +54,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .permitAll()
-                .and()
                 .httpBasic()
-                .and()
-                .httpBasic()
-                .authenticationEntryPoint(((request, response, e) -> resolver.resolveException(request, response, null, e)));
+                .authenticationEntryPoint(((request, response, e) -> getResolver().resolveException(request, response, null, e)));
         ;
     }
 
     @Bean
     public PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public HandlerExceptionResolver getResolver() {
+        return new DefaultHandlerExceptionResolver();
     }
 }
