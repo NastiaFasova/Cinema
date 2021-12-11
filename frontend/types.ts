@@ -31,4 +31,5 @@ export interface IFilm {
   imdbVotes: string;
 }
 
+
 export type AuthFormsType = 'login' | 'register';
