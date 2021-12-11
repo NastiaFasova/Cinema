@@ -23,6 +23,11 @@ const AppBar = () => {
         {user.email ?
           <Box display="flex" justifyContent="center" alignItems="center">
             <Typography variant="caption" sx={{ marginRight: 4, fontWeight: 'bold' }}>{user.email}</Typography>
+            <Link href="/admin" passHref>
+              <a>
+                <Button variant="outlined" sx={{ marginRight: 4 }}>Admin Page</Button>
+              </a>
+            </Link>
             <Button variant="outlined" onClick={() => dispatch(logout())}>Logout</Button>
           </Box> :
           <Box>
