@@ -11,6 +11,7 @@ const Navigation = () => {
           <li><Link href="/">Home</Link></li>
           <li><Link href="/films">Films</Link></li>
           <li><Link href="/">Movie Sessions</Link></li>
+          <li><Link href="/">Cinema Halls</Link></li>
         </ul>
       </nav>
     </div>
