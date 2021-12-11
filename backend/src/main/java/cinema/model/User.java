@@ -1,7 +1,6 @@
 package cinema.model;
 
 import lombok.Data;
-
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 @Data
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

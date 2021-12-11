@@ -4,7 +4,6 @@ import cinema.validation.EmailValidation;
 import cinema.validation.PasswordMatch;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.validation.constraints.Size;
 
 @Setter

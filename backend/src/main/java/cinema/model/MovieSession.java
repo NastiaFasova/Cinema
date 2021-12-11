@@ -1,7 +1,6 @@
 package cinema.model;
 
 import lombok.Data;
-
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

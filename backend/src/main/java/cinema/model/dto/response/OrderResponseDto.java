@@ -13,5 +13,4 @@ public class OrderResponseDto {
     private List<Long> ticketsId = new ArrayList<>();
     private String orderDate;
     private Long userId;
-
 }

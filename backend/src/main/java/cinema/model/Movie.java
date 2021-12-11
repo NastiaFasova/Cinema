@@ -1,5 +1,4 @@
 package cinema.model;
-
 import lombok.Data;
 
 import javax.persistence.Entity;

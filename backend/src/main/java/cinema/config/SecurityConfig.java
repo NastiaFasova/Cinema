@@ -68,4 +68,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public HandlerExceptionResolver getResolver() {
         return new DefaultHandlerExceptionResolver();
     }
+
 }
