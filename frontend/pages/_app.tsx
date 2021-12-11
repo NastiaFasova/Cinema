@@ -10,6 +10,7 @@ import {
   ThemeProvider,
   ThemeProvider as CoreThemeProvider,
 } from '@mui/material/styles';
+import Alert from '../components/Alert'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <CoreThemeProvider theme={theme}>
           <AppBar />
+          <Alert />
           <Component {...pageProps} />
         </CoreThemeProvider>
       </ThemeProvider>

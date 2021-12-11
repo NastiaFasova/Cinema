@@ -1,16 +1,20 @@
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react'
-import { useAppDispatch } from '../../globalStore/hooks';
-import { loginUser } from '../../globalStore/slices/authSlice';
-import { validationLoginSchema } from '../../utils/yup';
+import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
+import { loginUser, registerUser, selectAuth } from '../../globalStore/slices/authSlice';
+import { validationLoginSchema, validationRegisterSchema } from '../../utils/yup';
 import Link from 'next/link'
 import Input from '../Input';
 import SubmitBtn from '../SubmitBtn';
+import Loader from '../Loader';
+import { useRouter } from 'next/router';
 
 const RegisterForm = () => {
 
   const dispatch = useAppDispatch();
+  const auth = useAppSelector(selectAuth);
+  const router = useRouter();
 
   const styles = {
     width: 320,
@@ -23,11 +27,17 @@ const RegisterForm = () => {
       password: '',
       password2: '',
     },
-    validationSchema: validationLoginSchema,
+    validationSchema: validationRegisterSchema,
     onSubmit: async (form) => {
-      dispatch(loginUser(form));
+      dispatch(registerUser(form)).unwrap().then(() => {
+        router.push('/');
+      });
     },
   });
+
+  if (auth.loading === 'pending') {
+    return <Loader />;
+  }
 
   return (
     <Container>
@@ -54,7 +64,7 @@ const RegisterForm = () => {
             name="password2"
             inputStyles={styles}
           />
-          <SubmitBtn title="Login" />
+          <SubmitBtn title="Register" />
         </form>
         <Box display="flex" justifyContent="space-between">
           <Link href="/auth/login" passHref>

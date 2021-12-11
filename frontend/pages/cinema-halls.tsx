@@ -1,23 +1,53 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
-import data from '../../docs/movie.json';
-import { IFilm, IFilmLink } from '../types';
-import MoovieCard from '../components/MoovieCard';
-import axios from 'axios';
-import { Container, Grid } from '@mui/material';
+import data from '../../docs/cinema_halls.json';
+import { ICinemaHall } from '../types';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import CinemaHallCard from '../components/CinemaHallCard';
 
 type FilmsPageProps = {
-  films: IFilm[];
+  cinemaHalls: ICinemaHall[];
 }
 
-const FilmsPage: NextPage<FilmsPageProps> = ({ films }) => {
+const FilmsPage: NextPage<FilmsPageProps> = ({ cinemaHalls }) => {
+  const [select, setSelect] = useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setSelect(event.target.value as string);
+  };
+
   return (
     <div>
       <Container>
+
+        <Box sx={{ maxWidth: 320, marginBottom: 6 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={select}
+              label="Sort by"
+              onChange={handleChange}
+            >
+              <MenuItem value="capacityASC">Capacity ASC</MenuItem>
+              <MenuItem value="capacityDESC">Capacity DESC</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
         <Grid container spacing={2}>
-          {films.map((film, i) => (
-            <Grid item xs={3} key={film.id}>
-              <MoovieCard film={film} />
+          {cinemaHalls.sort((a, b) => {
+            if (select === 'capacityASC') {
+              return a.capacity - b.capacity;
+            } else if (select === 'capacityDESC') {
+              return b.capacity - a.capacity;
+            } else {
+              return 0;
+            }
+          }).map((hall, i) => (
+            <Grid item xs={4} key={hall.id}>
+              <CinemaHallCard cinemaHall={hall} />
             </Grid>
           ))}
         </Grid>
@@ -27,13 +57,8 @@ const FilmsPage: NextPage<FilmsPageProps> = ({ films }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const films = await Promise.all(data.map((async (film) => {
-    const { data } = await axios.get(film.link.concat(`&apikey=${process.env.IMDB_API_KEY}`));
-    return { ...data, id: film.id };
-  })));
-
   return {
-    props: { films, }, // will be passed to the page component as props
+    props: { cinemaHalls: data, }, // will be passed to the page component as props
   }
 }
 

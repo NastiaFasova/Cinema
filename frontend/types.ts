@@ -1,5 +1,5 @@
 
-export interface IUserLoginFormStandard {
+export interface IUserAuthFormStandard {
   email: string;
   password: string;
 }
@@ -36,6 +36,10 @@ export interface ICinemaHall {
   capacity: number;
   name: string;
   description: string;
+}
+
+export interface IUser {
+  email: string;
 }
 
 export type AuthFormsType = 'login' | 'register';
