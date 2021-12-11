@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "capacity": 20,
+    "name": "Title 1",
+    "description": "Any Description 1"
+  },
+  {
+    "id": 2,
+    "capacity": 25,
+    "name": "Title 2",
+    "description": "Any Description 2"
+  },
+  {
+    "id": 3,
+    "capacity": 20,
+    "name": "Title 3",
+    "description": "Any Description 3"
+  },
+  {
+    "id": 4,
+    "capacity": 40,
+    "name": "Title 4",
+    "description": "Any Description 4"
+  },
+  {
+    "id": 5,
+    "capacity": 40,
+    "name": "Title 5",
+    "description": "Any Description 5"
+  },
+  {
+    "id": 6,
+    "capacity": 15,
+    "name": "Title 6",
+    "description": "Any Description 6"
+  }
+]
