@@ -25,7 +25,7 @@ const RegisterForm = () => {
     initialValues: {
       email: '',
       password: '',
-      password2: '',
+      repeatPassword: '',
     },
     validationSchema: validationRegisterSchema,
     onSubmit: async (form) => {
@@ -61,7 +61,7 @@ const RegisterForm = () => {
             formik={formik}
             label="Repeat Password"
             type="password"
-            name="password2"
+            name="repeatPassword"
             inputStyles={styles}
           />
           <SubmitBtn title="Register" />

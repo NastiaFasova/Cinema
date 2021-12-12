@@ -17,7 +17,7 @@ export const validationLoginSchema = Yup.object({
 
 export const validationRegisterSchema = Yup.object({
   ...emailAndPassword,
-  password2: Yup.string()
+  repeatPassword: Yup.string()
     .required('Required')
     .oneOf([Yup.ref('password'), null], 'Passwords must match'),
 });

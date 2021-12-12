@@ -48,8 +48,11 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (form: IUserAuthFormStandard, thunkAPI) => {
     const token = btoa(`${form.email}:${form.password}`);
-    const { data, error, headers } = await postAPI('register', form, token);
-    if (error) {
+    console.log('form', form);
+    const { data: registeredUser, error: regErr } = await postAPI('register', form);
+    console.log('sadasdsadas')
+    const { data, error, headers } = await postAPI('login', form, token);
+    if (error || regErr) {
       thunkAPI.dispatch(setError("Error happen"));
       throw new Error(error.error);
     }
