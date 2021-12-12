@@ -88,7 +88,7 @@ export const addSession = createAsyncThunk<
       {
         showTime: session.date.toISOString().slice(0, -1),
         cinemaHallId: Number(session.hall),
-        movieTitle: Number(session.film)
+        movieTitle: session.film,
       },
       user.token, user.jwtToken);
     if (error) {

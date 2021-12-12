@@ -48,14 +48,15 @@ const AddMovieForm = () => {
             <a target="_blank"><span style={{ color: "#999999", marginLeft: 6 }}>IMDB</span></a>
           </Link>
         </Typography>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Input formik={formik} label="Film Title" name="title" inputStyles={styles} />
           <Input formik={formik} label="Film Id" name="apiId" inputStyles={styles} />
+          <Typography variant="caption">Format: http://www.omdbapi.com/?i=tt0096296</Typography>
           <Input formik={formik} label="Film Link" name="link" inputStyles={styles} />
           <SubmitBtn title="Add a movie" />
         </form>
       </Box>
-    </Container>
+    </Container >
   )
 }
 

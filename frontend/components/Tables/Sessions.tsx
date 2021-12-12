@@ -50,7 +50,7 @@ const Sessions: FC = () => {
   return (
     <div style={{ height: 600, width: '100%', marginTop: 20 }}>
       <DataGrid
-        rows={admin.movies}
+        rows={admin.movieSessions}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}

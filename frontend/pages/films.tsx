@@ -1,16 +1,42 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
-import data from '../../docs/movie.json';
 import { IFilm, IFilmLink } from '../types';
 import MoovieCard from '../components/MoovieCard';
 import axios from 'axios';
 import { Container, Grid } from '@mui/material';
+import { getAPI } from '../utils/fetchData';
+import { useAppSelector } from '../globalStore/hooks';
+import { selectUser } from '../globalStore/slices/authSlice';
+import Loader from '../components/Loader';
 
 type FilmsPageProps = {
   films: IFilm[];
 }
 
-const FilmsPage: NextPage<FilmsPageProps> = ({ films }) => {
+const FilmsPage: NextPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [films, setFilms] = useState<IFilm[]>([]);
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const filmsLinks = await getAPI('movies');
+      console.log('filmsLinks', filmsLinks)
+      const findedFilms = await Promise.all(filmsLinks.map((async (f: any) => {
+        const { data } = await axios.get(f.link.concat(`&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`));
+        return { ...data, id: f.apiId };
+      })));
+      setFilms(findedFilms);
+      setLoading(false);
+    })();
+
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div>
       <Container>
@@ -24,17 +50,6 @@ const FilmsPage: NextPage<FilmsPageProps> = ({ films }) => {
       </Container>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const films = await Promise.all(data.map((async (film) => {
-    const { data } = await axios.get(film.link.concat(`&apikey=${process.env.IMDB_API_KEY}`));
-    return { ...data, id: film.id };
-  })));
-
-  return {
-    props: { films, }, // will be passed to the page component as props
-  }
 }
 
 

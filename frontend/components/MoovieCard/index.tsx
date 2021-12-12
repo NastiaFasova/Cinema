@@ -33,15 +33,17 @@ const MoovieCard: FC<MoovieCardProps> = ({ film }) => {
   return (
     <Card>
       <CardContent>
-        <Link href={`/film/${film.id}`} passHref>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <Box sx={styles} />
-            <Typography align="center" variant="subtitle1" sx={{ fontWeight: 'bold', marginTop: 2 }}>{film.Title}</Typography>
-            <Box display="flex" alignItems="center" justifyContent="center">
-              <Typography align="center" variant="subtitle2">Rating IMDB: </Typography>
-              <Typography align="center" variant="caption" sx={{ marginLeft: 2, marginTop: 0.4 }}>{film.imdbRating}</Typography>
+        <Link href={`https://www.imdb.com/title/${film.id}`} passHref>
+          <a target="_blank">
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Box sx={styles} />
+              <Typography align="center" variant="subtitle1" sx={{ fontWeight: 'bold', marginTop: 2 }}>{film.Title}</Typography>
+              <Box display="flex" alignItems="center" justifyContent="center">
+                <Typography align="center" variant="subtitle2">Rating IMDB: </Typography>
+                <Typography align="center" variant="caption" sx={{ marginLeft: 2, marginTop: 0.4 }}>{film.imdbRating}</Typography>
+              </Box>
             </Box>
-          </Box>
+          </a>
         </Link>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'center', paddingBottom: 5 }}>
