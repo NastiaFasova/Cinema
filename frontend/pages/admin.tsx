@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import { Container } from '@mui/material';
 import AddMovieForm from '../components/Forms/AddMovieForm';
 import AddHallForm from '../components/Forms/AddHallForm';
+import Halls from '../components/Tables/Halls';
 
 const AdminPage: NextPage = () => {
   const [value, setValue] = useState('1');
@@ -32,6 +33,7 @@ const AdminPage: NextPage = () => {
           </TabPanel>
           <TabPanel value="2">
             <AddHallForm />
+            <Halls />
           </TabPanel>
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>

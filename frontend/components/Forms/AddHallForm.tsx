@@ -10,11 +10,12 @@ import SubmitBtn from '../SubmitBtn';
 import { postAPI } from '../../utils/fetchData';
 import { setError, setSuccess } from '../../globalStore/slices/alertSlice';
 import Loader from '../Loader';
+import { addHall, selectAdmin } from '../../globalStore/slices/adminSlice';
 
 const AddHallForm = () => {
-  const [loader, setLoader] = useState(false);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const admin = useAppSelector(selectAdmin);
 
   const styles = {
     width: 320,
@@ -27,18 +28,11 @@ const AddHallForm = () => {
       description: '',
     },
     onSubmit: async (form) => {
-      setLoader(true);
-      const { data, error } = await postAPI('cinema-halls', form, user.token, user.jwtToken);
-      if (error) {
-        dispatch(setError('Something bad happens'));
-        return;
-      }
-      dispatch(setSuccess('Successfully added'));
-      setLoader(false);
+      dispatch(addHall(form));
     },
   });
 
-  if (loader) {
+  if (admin.loading === 'pending') {
     return <Loader />;
   }
 
