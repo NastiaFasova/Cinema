@@ -13,6 +13,9 @@ interface AuthState {
 const initialState: AuthState = {
   user: (typeof window !== "undefined" && JSON.parse(window?.localStorage?.getItem('user') || 'null') as unknown as IUser) || {
     email: '',
+    token: '',
+    jwtToken: '',
+    role: null,
   },
   error: null,
   loading: 'idle',
@@ -21,13 +24,19 @@ const initialState: AuthState = {
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (form: IUserAuthFormStandard, thunkAPI) => {
-    const { data, error } = await postAPI('auth/login', form);
+    const token = btoa(`${form.email}:${form.password}`);
+    const { data, error, headers } = await postAPI('login', form, token);
+
     if (error) {
-      thunkAPI.dispatch(setError(error.error));
+      thunkAPI.dispatch(setError("Error happen"));
       throw new Error(error.error);
     }
+    console.log('data?.data', data);
     const user = {
       email: form.email,
+      token,
+      jwtToken: headers['x-csrf-token'],
+      role: data?.roles[0]?.roleName,
     };
 
     localStorage.setItem('user', JSON.stringify(user))
@@ -38,15 +47,19 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (form: IUserAuthFormStandard, thunkAPI) => {
-    const { data, error } = await postAPI('register', form);
+    const token = btoa(`${form.email}:${form.password}`);
+    const { data, error, headers } = await postAPI('register', form, token);
     if (error) {
-      thunkAPI.dispatch(setError(error.error));
+      thunkAPI.dispatch(setError("Error happen"));
       throw new Error(error.error);
     }
 
     thunkAPI.dispatch(setSuccess(`User registered with email ${form.email}`));
     const user = {
       email: form.email,
+      token,
+      jwtToken: headers['x-csrf-token'],
+      role: data?.roles[0]?.roleName,
     };
 
     localStorage.setItem('user', JSON.stringify(user))
@@ -68,7 +81,12 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(logout.fulfilled, (state, action) => {
-        state.user = { email: '' };
+        state.user = {
+          email: '',
+          token: '',
+          jwtToken: '',
+          role: null,
+        };
         state.loading = 'idle';
       })
       .addCase(loginUser.fulfilled, (state, action) => {

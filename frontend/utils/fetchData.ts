@@ -1,11 +1,14 @@
 import axios from '../core/axios';
 
-export const postAPI = async (url: string, form: object, token?: string): Promise<any> => {
+export const postAPI = async (url: string, form: object, token?: string, jwt?: string): Promise<any> => {
   try {
-    const { data } = await axios.post(`/${url}`, form, {
-      headers: { Authorization: 'Bearer ' + token, }
+    const { data, headers } = await axios.post(`/${url}`, form, {
+      headers: {
+        'Authorization': `Basic ${token}`,
+        'X-CSRF-TOKEN': jwt || '',
+      }
     });
-    return data;
+    return { data, headers };
   } catch (err: any) {
     if (err?.response) {
       return { error: err.response?.data };
@@ -14,10 +17,13 @@ export const postAPI = async (url: string, form: object, token?: string): Promis
   }
 }
 
-export const getAPI = async (url: string, token?: string): Promise<any> => {
+export const getAPI = async (url: string, token?: string, jwt?: string): Promise<any> => {
   try {
     const { data } = await axios.get(`/${url}`, {
-      headers: { Authorization: 'Bearer ' + token, }
+      headers: {
+        'Authorization': `Basic ${token}`,
+        'X-CSRF-TOKEN': jwt || '',
+      }
     });
     return data;
   } catch (err: any) {

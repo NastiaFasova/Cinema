@@ -40,6 +40,9 @@ export interface ICinemaHall {
 
 export interface IUser {
   email: string;
+  token: string;
+  jwtToken: string;
+  role: 'ADMIN' | 'USER' | null;
 }
 
 export type AuthFormsType = 'login' | 'register';

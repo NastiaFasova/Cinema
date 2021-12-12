@@ -15,6 +15,11 @@ const AppBar = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push('/');
+  }
+
   return (
     <Container>
       <Box sx={{ display: 'flex', alignItems: 'center', paddingTop: 5, justifyContent: 'space-between' }} className={styles.appbar}>
@@ -25,10 +30,10 @@ const AppBar = () => {
             <Typography variant="caption" sx={{ marginRight: 4, fontWeight: 'bold' }}>{user.email}</Typography>
             <Link href="/admin" passHref>
               <a>
-                <Button variant="outlined" sx={{ marginRight: 4 }}>Admin Page</Button>
+                {user.role === 'ADMIN' && <Button variant="outlined" sx={{ marginRight: 4 }}>Admin Page</Button>}
               </a>
             </Link>
-            <Button variant="outlined" onClick={() => dispatch(logout())}>Logout</Button>
+            <Button variant="outlined" onClick={handleLogout}>Logout</Button>
           </Box> :
           <Box>
             <Link href='/auth/login'>

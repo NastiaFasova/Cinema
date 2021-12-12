@@ -1,19 +1,20 @@
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useState } from 'react'
-import { useAppDispatch } from '../../globalStore/hooks';
-import { loginUser } from '../../globalStore/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
+import { loginUser, selectUser } from '../../globalStore/slices/authSlice';
 import { validationLoginSchema } from '../../utils/yup';
 import Link from 'next/link'
 import Input from '../Input';
 import SubmitBtn from '../SubmitBtn';
 import { postAPI } from '../../utils/fetchData';
-import Loader from '../Loader';
 import { setError, setSuccess } from '../../globalStore/slices/alertSlice';
+import Loader from '../Loader';
 
-const AddMovieForm = () => {
+const AddHallForm = () => {
   const [loader, setLoader] = useState(false);
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
   const styles = {
     width: 320,
@@ -22,13 +23,12 @@ const AddMovieForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      apiId: '',
-      link: '',
+      capacity: 0,
+      description: '',
     },
-    validationSchema: validationLoginSchema,
     onSubmit: async (form) => {
       setLoader(true);
-      const { data, error } = await postAPI('/movies', form, '');
+      const { data, error } = await postAPI('cinema-halls', form, user.token, user.jwtToken);
       if (error) {
         dispatch(setError('Something bad happens'));
         return;
@@ -46,22 +46,16 @@ const AddMovieForm = () => {
     <Container>
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
         <Typography variant="h4" sx={{ fontWeight: 'bold' }} align="center">
-          Add a new movie
-        </Typography>
-        <Typography variant="caption" align="center">
-          You can find any on
-          <Link href="https://www.imdb.com" passHref>
-            <a target="_blank"><span style={{ color: "#999999", marginLeft: 6 }}>IMDB</span></a>
-          </Link>
+          Add a new cinema hall
         </Typography>
         <form onSubmit={formik.handleSubmit}>
-          <Input formik={formik} label="Film Id" name="apiId" inputStyles={styles} />
-          <Input formik={formik} label="Film Link" name="link" inputStyles={styles} />
-          <SubmitBtn title="Add a movie" />
+          <Input formik={formik} label="Hall Capacity" name="capacity" inputStyles={styles} />
+          <Input formik={formik} label="Description" name="description" inputStyles={styles} />
+          <SubmitBtn title="Add a new hall" />
         </form>
       </Box>
     </Container>
   )
 }
 
-export default AddMovieForm
+export default AddHallForm

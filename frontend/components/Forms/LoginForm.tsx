@@ -1,16 +1,20 @@
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react'
-import { useAppDispatch } from '../../globalStore/hooks';
-import { loginUser } from '../../globalStore/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
+import { loginUser, selectAuth } from '../../globalStore/slices/authSlice';
 import { validationLoginSchema } from '../../utils/yup';
 import Link from 'next/link'
 import Input from '../Input';
 import SubmitBtn from '../SubmitBtn';
+import Loader from '../Loader';
+import { useRouter } from 'next/router';
 
 const LoginForm = () => {
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const auth = useAppSelector(selectAuth);
 
   const styles = {
     width: 320,
@@ -24,9 +28,15 @@ const LoginForm = () => {
     },
     validationSchema: validationLoginSchema,
     onSubmit: async (form) => {
-      dispatch(loginUser(form));
+      dispatch(loginUser(form)).unwrap().then(() => {
+        router.push('/');
+      });;
     },
   });
+
+  if (auth.loading === 'pending') {
+    return <Loader />;
+  }
 
   return (
     <Container>

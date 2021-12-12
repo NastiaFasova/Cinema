@@ -8,7 +8,7 @@ const emailAndPassword = {
   ...email,
   password: Yup.string()
     .required('Required')
-    .min(6, 'Password is too short - should be 6 chars minimum.'),
+    .min(4, 'Password is too short - should be 4 chars minimum.'),
 };
 
 export const validationLoginSchema = Yup.object({
