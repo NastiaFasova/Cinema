@@ -3,30 +3,29 @@ import { DataGrid, GridSelectionModel } from '@mui/x-data-grid';
 import { FC, useEffect, useState } from 'react';
 import { ICinemaHall } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
-import { deleteHall, getHalls, selectAdmin } from '../../globalStore/slices/adminSlice';
+import { deleteSession, getMovies, getSessions, selectAdmin } from '../../globalStore/slices/adminSlice';
 import { Button } from '@mui/material';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
   {
-    field: 'description',
-    headerName: 'Description',
-    width: 200,
+    field: 'film',
+    headerName: 'Film Title',
+    width: 300,
   },
   {
-    field: 'capacity',
-    headerName: 'Capacity',
-    type: 'number',
-    width: 200,
+    field: 'hall',
+    headerName: 'Hall identifier',
+    width: 400,
   },
   {
-    field: 'title',
-    headerName: 'Title',
+    field: 'date',
+    headerName: 'Date',
     width: 200,
   }
 ];
 
-const Halls: FC = () => {
+const Sessions: FC = () => {
   const [selected, setSelected] = useState<any>();
   const dispatch = useAppDispatch();
   const admin = useAppSelector(selectAdmin)
@@ -40,18 +39,18 @@ const Halls: FC = () => {
   const handleDelete = () => {
     const isDelete = confirm("Are you sure about that?");
     if (isDelete) {
-      dispatch(deleteHall(selected));
+      dispatch(deleteSession(selected));
     }
   }
 
   useEffect(() => {
-    dispatch(getHalls(null));
+    dispatch(getSessions(null));
   }, [dispatch]);
 
   return (
     <div style={{ height: 600, width: '100%', marginTop: 20 }}>
       <DataGrid
-        rows={admin.cinemaHalls}
+        rows={admin.movies}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
@@ -67,4 +66,4 @@ const Halls: FC = () => {
   );
 };
 
-export default Halls;
+export default Sessions;

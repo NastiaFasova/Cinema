@@ -6,8 +6,9 @@ export interface IUserAuthFormStandard {
 
 export interface IFilmLink {
   id: number;
-  appId: string;
+  apiId: string;
   link: string;
+  title: string;
 }
 
 export interface IFilm {
@@ -34,8 +35,15 @@ export interface IFilm {
 export interface ICinemaHall {
   id: number;
   capacity: number;
-  name: string;
+  title: string;
   description: string;
+}
+
+export interface ICinemaSession {
+  id: number;
+  film: string;
+  hall: string;
+  date: string; //toLocaleDateString()
 }
 
 export interface IUser {
@@ -44,5 +52,10 @@ export interface IUser {
   jwtToken: string;
   role: 'ADMIN' | 'USER' | null;
 }
+
+export type SelectType = {
+  key: string;
+  value: string | number;
+};
 
 export type AuthFormsType = 'login' | 'register';

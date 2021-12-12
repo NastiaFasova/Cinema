@@ -26,6 +26,7 @@ const AddHallForm = () => {
     initialValues: {
       capacity: 0,
       description: '',
+      title: '',
     },
     onSubmit: async (form) => {
       dispatch(addHall(form));
@@ -43,6 +44,7 @@ const AddHallForm = () => {
           Add a new cinema hall
         </Typography>
         <form onSubmit={formik.handleSubmit}>
+          <Input formik={formik} label="Hall Title" name="title" inputStyles={styles} />
           <Input formik={formik} label="Hall Capacity" name="capacity" inputStyles={styles} />
           <Input formik={formik} label="Description" name="description" inputStyles={styles} />
           <SubmitBtn title="Add a new hall" />

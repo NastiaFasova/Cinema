@@ -48,10 +48,13 @@ export const patchAPI = async (url: string, form: object, token?: string): Promi
   }
 }
 
-export const deleteAPI = async (url: string, token?: string): Promise<any> => {
+export const deleteAPI = async (url: string, token?: string, jwt?: string): Promise<any> => {
   try {
     const { data } = await axios.delete(`/${url}`, {
-      headers: { Authorization: 'Bearer ' + token, }
+      headers: {
+        'Authorization': `Basic ${token}`,
+        'X-CSRF-TOKEN': jwt || '',
+      }
     });
     return data;
   } catch (err: any) {

@@ -1,7 +1,7 @@
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch } from '../../globalStore/hooks';
+import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
 import { loginUser } from '../../globalStore/slices/authSlice';
 import { validationLoginSchema } from '../../utils/yup';
 import Link from 'next/link'
@@ -10,10 +10,11 @@ import SubmitBtn from '../SubmitBtn';
 import { postAPI } from '../../utils/fetchData';
 import Loader from '../Loader';
 import { setError, setSuccess } from '../../globalStore/slices/alertSlice';
+import { addMovie, selectAdmin } from '../../globalStore/slices/adminSlice';
 
 const AddMovieForm = () => {
-  const [loader, setLoader] = useState(false);
   const dispatch = useAppDispatch();
+  const admin = useAppSelector(selectAdmin);
 
   const styles = {
     width: 320,
@@ -24,21 +25,14 @@ const AddMovieForm = () => {
     initialValues: {
       apiId: '',
       link: '',
+      title: '',
     },
-    validationSchema: validationLoginSchema,
     onSubmit: async (form) => {
-      setLoader(true);
-      const { data, error } = await postAPI('/movies', form, '');
-      if (error) {
-        dispatch(setError('Something bad happens'));
-        return;
-      }
-      dispatch(setSuccess('Successfully added'));
-      setLoader(false);
+      dispatch(addMovie(form));
     },
   });
 
-  if (loader) {
+  if (admin.loading === 'pending') {
     return <Loader />;
   }
 
@@ -55,6 +49,7 @@ const AddMovieForm = () => {
           </Link>
         </Typography>
         <form onSubmit={formik.handleSubmit}>
+          <Input formik={formik} label="Film Title" name="title" inputStyles={styles} />
           <Input formik={formik} label="Film Id" name="apiId" inputStyles={styles} />
           <Input formik={formik} label="Film Link" name="link" inputStyles={styles} />
           <SubmitBtn title="Add a movie" />

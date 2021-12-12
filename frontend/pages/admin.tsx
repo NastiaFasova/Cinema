@@ -9,6 +9,9 @@ import { Container } from '@mui/material';
 import AddMovieForm from '../components/Forms/AddMovieForm';
 import AddHallForm from '../components/Forms/AddHallForm';
 import Halls from '../components/Tables/Halls';
+import Movies from '../components/Tables/Movies';
+import AddSessionForm from '../components/Forms/AddSessionForm';
+import Sessions from '../components/Tables/Sessions';
 
 const AdminPage: NextPage = () => {
   const [value, setValue] = useState('1');
@@ -25,17 +28,21 @@ const AdminPage: NextPage = () => {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Movies Control" value="1" />
               <Tab label="Cinema Halls Control" value="2" />
-              <Tab label="Item Three" value="3" />
+              <Tab label="Sessions Control" value="3" />
             </TabList>
           </Box>
           <TabPanel value="1">
             <AddMovieForm />
+            <Movies />
           </TabPanel>
           <TabPanel value="2">
             <AddHallForm />
             <Halls />
           </TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
+          <TabPanel value="3">
+            <AddSessionForm />
+            <Sessions />
+          </TabPanel>
         </TabContext>
       </Box>
     </Container>

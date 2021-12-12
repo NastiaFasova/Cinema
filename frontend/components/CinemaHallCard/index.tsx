@@ -36,7 +36,7 @@ const CinemaHallCard: FC<CinemaHallCardProps> = ({ cinemaHall }) => {
           Capacity: <span style={{ fontWeight: 'bold' }}>{cinemaHall.capacity}</span>
         </Typography>
         <Typography variant="h5" component="div">
-          {cinemaHall.name}
+          {cinemaHall.title}
         </Typography>
         <Typography variant="body2">
           {cinemaHall.description}
