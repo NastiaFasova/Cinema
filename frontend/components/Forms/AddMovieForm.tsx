@@ -21,16 +21,27 @@ const AddMovieForm = () => {
     marginTop: 5,
   };
 
+  const initialValues = {
+    apiId: '',
+    link: '',
+    title: '',
+  };
+
   const formik = useFormik({
-    initialValues: {
-      apiId: '',
-      link: '',
-      title: '',
-    },
+    initialValues,
     onSubmit: async (form) => {
       dispatch(addMovie(form));
+      formik.setValues(initialValues);
     },
   });
+
+  const handleFilmLinkChange = (e: any) => {
+    formik.setFormikState((prev) => ({
+      ...prev, values: {
+        apiId: e.nativeEvent.target.value, link: `${process.env.NEXT_PUBLIC_API_URL}${e.target.value}`, title: formik.values['title']
+      }
+    }))
+  }
 
   if (admin.loading === 'pending') {
     return <Loader />;
@@ -50,9 +61,9 @@ const AddMovieForm = () => {
         </Typography>
         <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Input formik={formik} label="Film Title" name="title" inputStyles={styles} />
-          <Input formik={formik} label="Film Id" name="apiId" inputStyles={styles} />
+          <Input customOnChange={handleFilmLinkChange} formik={formik} label="Film Id" name="apiId" inputStyles={styles} />
           <Typography variant="caption">Format: http://www.omdbapi.com/?i=tt0096296</Typography>
-          <Input formik={formik} label="Film Link" name="link" inputStyles={styles} />
+          <Input formik={formik} label="Film Link" name="link" inputStyles={styles} disabled />
           <SubmitBtn title="Add a movie" />
         </form>
       </Box>

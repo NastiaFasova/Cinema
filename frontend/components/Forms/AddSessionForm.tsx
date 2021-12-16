@@ -30,14 +30,17 @@ const AddSessionForm = () => {
     marginTop: 5,
   };
 
+  const initialValues = {
+    film: '',
+    hall: '',
+    date: new Date(),
+  }
+
   const formik = useFormik({
-    initialValues: {
-      film: '',
-      hall: '',
-      date: new Date(),
-    },
+    initialValues,
     onSubmit: async (form) => {
       dispatch(addSession(form));
+      formik.setValues(initialValues);
     },
   });
 

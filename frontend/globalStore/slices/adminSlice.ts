@@ -42,7 +42,7 @@ export const getSessions = createAsyncThunk<
     const user = thunkAPI.getState().auth.user;
     const data = await getAPI('movie-sessions', user.token, user.jwtToken);
 
-    return data as ICinemaSession[];
+    return data.map((s: any) => ({ ...s, id: s.movieSessionId, hall: s.cinemaHallId, date: s.showTime, film: s.movieTitle })) as ICinemaSession[];
   },
 );
 
@@ -54,7 +54,6 @@ export const getMovies = createAsyncThunk<
   async (_, thunkAPI) => {
     const user = thunkAPI.getState().auth.user;
     const data = await getAPI('movies', user.token, user.jwtToken);
-    console.log('data', data)
     return data as IFilmLink[];
   },
 );
@@ -73,7 +72,7 @@ export const addHall = createAsyncThunk<
     }
     thunkAPI.dispatch(setSuccess('Successfully added'));
     // That's so fucking bad)
-    return { id: Number(thunkAPI.getState().admin.movies?.at(-1)?.id || 0 + 1), ...hall };
+    return { id: data.id, ...hall };
   },
 );
 
@@ -84,6 +83,7 @@ export const addSession = createAsyncThunk<
   'admin/addSession',
   async (session, thunkAPI) => {
     const user = thunkAPI.getState().auth.user;
+    console.log('session.date.toISOString().slice(0, -1)', session.date.toISOString().slice(0, -1));
     const { data, error } = await postAPI('movie-sessions',
       {
         showTime: session.date.toISOString().slice(0, -1),
@@ -97,7 +97,7 @@ export const addSession = createAsyncThunk<
     }
     thunkAPI.dispatch(setSuccess('Successfully added'));
     // That's so fucking bad)
-    return { id: Number(thunkAPI.getState().admin.movieSessions?.at(-1)?.id || 0 + 1), ...session };
+    return { id: data.movieSessionId, ...session };
   },
 );
 
@@ -114,8 +114,7 @@ export const addMovie = createAsyncThunk<
       return;
     }
     thunkAPI.dispatch(setSuccess('Successfully added'));
-    // That's so fucking bad)
-    return { id: Number(thunkAPI.getState().admin.cinemaHalls.at(-1)?.id ?? 0 + 1), ...movie };
+    return { id: data.id, ...movie };
   },
 );
 
@@ -160,16 +159,16 @@ export const deleteSession = createAsyncThunk<
   { state: RootState }
 >(
   'admin/deleteSesion',
-  async (movieId: string, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     const user = thunkAPI.getState().auth.user;
-    const { data, error } = await deleteAPI(`movie-sessions/${movieId}`, user.token, user.jwtToken);
+    const { data, error } = await deleteAPI(`movie-sessions/${id}`, user.token, user.jwtToken);
     if (error) {
       thunkAPI.dispatch(setError('Something bad happens'));
       return '';
     }
     thunkAPI.dispatch(setSuccess('Successfully deleted'));
     // That's so fucking bad)
-    return movieId;
+    return id;
   },
 );
 

@@ -22,14 +22,17 @@ const AddHallForm = () => {
     marginTop: 5,
   };
 
+  const initialValues = {
+    capacity: 0,
+    description: '',
+    title: '',
+  };
+
   const formik = useFormik({
-    initialValues: {
-      capacity: 0,
-      description: '',
-      title: '',
-    },
+    initialValues,
     onSubmit: async (form) => {
       dispatch(addHall(form));
+      formik.setValues(initialValues);
     },
   });
 

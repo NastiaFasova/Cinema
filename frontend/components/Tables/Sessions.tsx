@@ -16,7 +16,7 @@ const columns = [
   {
     field: 'hall',
     headerName: 'Hall identifier',
-    width: 400,
+    width: 200,
   },
   {
     field: 'date',
