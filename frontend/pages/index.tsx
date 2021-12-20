@@ -9,6 +9,7 @@ import Item from '../components/Item';
 import Loader from '../components/Loader';
 import { useAppSelector } from '../globalStore/hooks';
 import { selectUser } from '../globalStore/slices/authSlice';
+import { getAPI } from '../utils/fetchData';
 
 const Home: NextPage = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -53,12 +54,8 @@ const Home: NextPage = () => {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const filmsLinks = await getAPI('movies');
-      const findedFilms = await Promise.all(filmsLinks.map((async (f: any) => {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}${f.apiId}`);
-        return { ...data, id: f.apiId };
-      })));
-      setFilms(findedFilms);
+      const sessions = await getAPI('movie-sessions');
+      // setFilms(sessions);
       setLoading(false);
     })();
 
@@ -70,11 +67,11 @@ const Home: NextPage = () => {
 
   const data: ICartItem[] = [{
     id: 1,
-    category: "teee",
-    description: "dsadasd",
-    image: "dsad",
-    price: 222,
-    title: "dsadas",
+    category: "specific",
+    description: "This is a description of a film",
+    image: "https://m.media-amazon.com/images/M/MV5BMDI5ZWJhOWItYTlhOC00YWNhLTlkNzctNDU5YTI1M2E1MWZhXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg",
+    price: 20,
+    title: "Title",
     amount: 23,
   }];
 

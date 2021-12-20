@@ -8,45 +8,30 @@ import { getAPI } from '../utils/fetchData';
 import { useAppSelector } from '../globalStore/hooks';
 import { selectUser } from '../globalStore/slices/authSlice';
 import Loader from '../components/Loader';
-import NotFound from '../components/NotFound';
-
-type FilmsPageProps = {
-  films: IFilm[];
-}
+import Error from '../components/Error';
+import { useFetchAllMoviesQuery } from '../services/film';
 
 const FilmsPage: NextPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [films, setFilms] = useState<IFilm[]>([]);
+  const { data = [], isLoading, isError } = useFetchAllMoviesQuery('')
   const user = useAppSelector(selectUser);
 
-  useEffect(() => {
-    setLoading(true);
-    (async () => {
-      const filmsLinks = await getAPI('movies');
-      console.log('filmsLinks', filmsLinks)
-      const findedFilms = await Promise.all(filmsLinks.map((async (f: any) => {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}${f.apiId}`);
-        return { ...data, id: f.apiId };
-      })));
-      setFilms(findedFilms);
-      setLoading(false);
-    })();
-
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
+  }
+
+  if (isError) {
+    return <Error title="Something went wrong" />;
   }
 
   return (
     <div>
       <Container>
         <Grid container spacing={2}>
-          {films.length > 0 ? films.map((film, i) => (
+          {data.length > 0 ? data.map((film, i) => (
             <Grid item xs={3} key={film.id}>
               <MoovieCard film={film} />
             </Grid>
-          )) : <NotFound />}
+          )) : <Error title="Not Found :(" />}
         </Grid>
       </Container>
     </div>
