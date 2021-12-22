@@ -30,6 +30,9 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
   let initialValues = originalValues ? originalValues : {
     movieTitle: '',
     cinemaHallId: '',
+    price: 0,
+    currentTicketCount: 0,
+    maxTicketCount: 0,
     showTime: new Date(),
   };
 
@@ -41,8 +44,9 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
   const formik = useFormik({
     initialValues,
     validationSchema: validationMovieSessionSchema,
-    onSubmit: ({ id, movieTitle, showTime, cinemaHallId }) => {
-      const body = { movieTitle, showTime: showTime.toISOString().slice(0, -1), cinemaHallId }
+    onSubmit: ({ id, movieTitle, showTime, cinemaHallId, maxTicketCount, currentTicketCount, price }) => {
+      const body =
+        { movieTitle, showTime: showTime.toISOString().slice(0, -1), cinemaHallId, maxTicketCount, currentTicketCount, price }
       if (type === 'create') {
         createMovieSession(body);
       } else {
@@ -53,6 +57,16 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
       }));
     },
   });
+
+  const handleHallChange = (e: any) => {
+    formik.setFormikState((prev) => ({
+      ...prev, values: {
+        ...prev.values,
+        cinemaHallId: e.target.value,
+        maxTicketCount: String(halls.find((h) => h.id == e.target.value)?.capacity),
+      }
+    }))
+  }
 
   useEffect(() => {
     if (isError || isUpdateError || moviesError || moviesError) {
@@ -65,7 +79,22 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
 
   return (
     <Box component="form" onSubmit={formik.handleSubmit} sx={formStyles}>
-      {type === 'update' && <Input formik={formik} label="Id" name="id" disabled />}
+      {type === 'update' &&
+        <Box>
+          <Input formik={formik} label="Id" name="id" disabled />
+        </Box>
+      }
+      <Box>
+        <Input formik={formik} label="Tickets price" name="price" value={originalValues?.price} />
+      </Box>
+      <Box>
+        <Input
+          formik={formik}
+          label="Max Tickets Count"
+          name="maxTicketCount"
+          disabled
+        />
+      </Box>
       <Autocomplete
         disablePortal
         onChange={(event: any, newValue: string | null) => {
@@ -80,6 +109,7 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
         {checkForInputErrors(formik, 'movieTitle')}
       </span>
       <Select
+        customHandleChange={handleHallChange}
         name="cinemaHallId"
         formik={formik}
         label="Select Hall"

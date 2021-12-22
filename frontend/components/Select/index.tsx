@@ -21,6 +21,7 @@ export type SelectProps = {
   fullWidth?: boolean;
   keyValuePairArr: SelectType[];
   multiple?: boolean;
+  customHandleChange?: any;
 };
 
 const ITEM_HEIGHT = 48;
@@ -56,6 +57,7 @@ const CustomSelect: React.FC<SelectProps> = ({
   fullWidth,
   multiple,
   keyValuePairArr,
+  customHandleChange,
 }) => {
   const theme = useTheme();
   return (
@@ -70,7 +72,7 @@ const CustomSelect: React.FC<SelectProps> = ({
           id={id || name}
           label={label}
           name={name}
-          onChange={formik.handleChange}
+          onChange={customHandleChange || formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values[name]}
           fullWidth={fullWidth}

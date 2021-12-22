@@ -28,10 +28,10 @@ const AccountTopupForm: FC<AccountTopupFormProps> = ({ open, setOpen }) => {
     <FormDialogWrapper
       open={open}
       handleClose={() => setOpen(false)}
-      title=""
+      title="To Up your Wallet"
     >
       <Box component="form" onSubmit={formik.handleSubmit} sx={formStyles as any}>
-        <Input formik={formik} label="Description" name="description" />
+        <Input formik={formik} label="Count" name="money" />
         <SubmitBtn title="Top up an account" />
       </Box>
     </FormDialogWrapper>

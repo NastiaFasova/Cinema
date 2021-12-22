@@ -6,48 +6,15 @@ import { useAppSelector } from '../globalStore/hooks';
 import { selectUser } from '../globalStore/slices/authSlice';
 import Sessions from '../components/Sessions';
 import Link from 'next/link';
-
-const data: ICartItem[] = [{
-  id: 1,
-  category: "specific",
-  description: "This is a description of a film",
-  image: "https://m.media-amazon.com/images/M/MV5BMDI5ZWJhOWItYTlhOC00YWNhLTlkNzctNDU5YTI1M2E1MWZhXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg",
-  price: 25,
-  title: "Title",
-  amount: 33,
-},
-{
-  id: 2,
-  category: "specific",
-  description: "This is a description of a film",
-  image: "https://m.media-amazon.com/images/M/MV5BMDI5ZWJhOWItYTlhOC00YWNhLTlkNzctNDU5YTI1M2E1MWZhXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg",
-  price: 155,
-  title: "Title",
-  amount: 25,
-},
-{
-  id: 3,
-  category: "specific",
-  description: "This is a description of a film",
-  image: "https://m.media-amazon.com/images/M/MV5BMDI5ZWJhOWItYTlhOC00YWNhLTlkNzctNDU5YTI1M2E1MWZhXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg",
-  price: 5,
-  title: "Title",
-  amount: 5,
-},
-{
-  id: 4,
-  category: "specific",
-  description: "This is a description of a film",
-  image: "https://m.media-amazon.com/images/M/MV5BMDI5ZWJhOWItYTlhOC00YWNhLTlkNzctNDU5YTI1M2E1MWZhXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg",
-  price: 33,
-  title: "Title",
-  amount: 2,
-}
-];
+import Error from '../components/Error';
 
 const Home: NextPage = () => {
   const user = useAppSelector(selectUser);
 
+
+  if (user.blocked) {
+    return <Error title="You are blocked" />;
+  }
 
   return <>
     {user.email ? <Sessions /> :
@@ -66,4 +33,4 @@ const Home: NextPage = () => {
   </>
 }
 
-export default Home
+export default Home;

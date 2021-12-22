@@ -48,6 +48,8 @@ export const validationMovieSessionSchema = Yup.object({
   movieTitle: Yup.string().required('Required').nullable(),
   cinemaHallId: Yup.string().required('Required'),
   showTime: Yup.date().required('Required'),
+  price: Yup.number().required('Required').min(5, '5 is minimumu').max(100, '100 is maximum'),
+  maxTicketCount: Yup.number().required('Required').min(50, '50 is minimumu').max(150, '150 is maximum'),
 });
 
 export const validationAccountTopUpSchema = Yup.object({

@@ -41,13 +41,15 @@ export interface ICinemaHall {
 
 export interface ICinemaSession {
   id: number;
-  movieSessionId: number;
+  movieSessionId?: number;
   movieTitle: string;
   cinemaHallId: string;
-  apiId: string;
-  description: string;
-  image: string;
-  price?: number;
+  apiId?: string;
+  description?: string;
+  image?: string;
+  price: number;
+  currentTicketCount: number;
+  maxTicketCount: number;
   showTime: string | Date; //toLocaleDateString()
 }
 
