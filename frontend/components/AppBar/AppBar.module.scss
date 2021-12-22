@@ -4,4 +4,9 @@
   position: relative;
   z-index: 2;
   margin-bottom: 35px;
+
+  &__box {
+    display: flex !important;
+    align-items: center !important;
+  }
 }

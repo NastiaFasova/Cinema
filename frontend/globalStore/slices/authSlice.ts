@@ -1,21 +1,26 @@
 import { createAsyncThunk, createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit'
-import { IUser, IUserAuthFormStandard } from '../../types';
+import { IUserAuthFormStandard, IUserProfile } from '../../types';
 import { getAPI, postAPI } from '../../utils/fetchData';
 import type { RootState } from '../store'
 import { setError, setSuccess } from './alertSlice';
 
 interface AuthState {
-  user: IUser;
+  user: IUserProfile;
   loading: 'pending' | 'idle';
   error: SerializedError | null;
 }
 
 const initialState: AuthState = {
-  user: (typeof window !== "undefined" && JSON.parse(window?.localStorage?.getItem('user') || 'null') as unknown as IUser) || {
+  user: (typeof window !== "undefined" && JSON.parse(window?.localStorage?.getItem('user') || 'null') as unknown as IUserProfile) || {
+    id: '',
     email: '',
     token: '',
     jwtToken: '',
     role: null,
+    blocked: false,
+    firstname: '',
+    lastname: '',
+    bill: 0,
   },
   error: null,
   loading: 'idle',
@@ -26,17 +31,21 @@ export const loginUser = createAsyncThunk(
   async (form: IUserAuthFormStandard, thunkAPI) => {
     const token = btoa(`${form.email}:${form.password}`);
     const { data, error, headers } = await postAPI('login', form, token);
-
     if (error) {
       thunkAPI.dispatch(setError("Error happen"));
       throw new Error(error.error);
     }
-    console.log('data?.data', data);
-    const user = {
+
+    const user: IUserProfile = {
+      id: data?.id || '',
       email: form.email,
       token,
-      jwtToken: headers['x-csrf-token'],
-      role: data?.roles[0]?.roleName,
+      jwtToken: data?.token?.token,
+      role: data?.role.slice(1,).slice(0, -1),
+      blocked: data?.blocked,
+      bill: data?.bill || 0,
+      firstname: data?.firstname || '',
+      lastname: data?.lastname || '',
     };
 
     localStorage.setItem('user', JSON.stringify(user))
@@ -48,9 +57,7 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (form: IUserAuthFormStandard, thunkAPI) => {
     const token = btoa(`${form.email}:${form.password}`);
-    console.log('form', form);
     const { data: registeredUser, error: regErr } = await postAPI('register', form);
-    console.log('sadasdsadas')
     const { data, error, headers } = await postAPI('login', form, token);
     if (error || regErr) {
       thunkAPI.dispatch(setError("Error happen"));
@@ -58,11 +65,16 @@ export const registerUser = createAsyncThunk(
     }
 
     thunkAPI.dispatch(setSuccess(`User registered with email ${form.email}`));
-    const user = {
+    const user: IUserProfile = {
+      id: data?.id || '',
       email: form.email,
       token,
-      jwtToken: headers['x-csrf-token'],
-      role: data?.roles[0]?.roleName,
+      jwtToken: data?.token?.token,
+      role: data?.role.slice(1,).slice(0, -1),
+      blocked: data?.blocked,
+      bill: data?.bill || 0,
+      firstname: data?.firstname || '',
+      lastname: data?.lastname || '',
     };
 
     localStorage.setItem('user', JSON.stringify(user))
@@ -80,15 +92,25 @@ export const logout = createAsyncThunk(
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    updateBlockStatus(state, action: PayloadAction<boolean>) {
+      state.user.blocked = action.payload;
+      localStorage.setItem('user', JSON.stringify(state.user))
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(logout.fulfilled, (state, action) => {
         state.user = {
+          id: '',
           email: '',
           token: '',
           jwtToken: '',
+          bill: 0,
+          firstname: '',
+          lastname: '',
           role: null,
+          blocked: false,
         };
         state.loading = 'idle';
       })
@@ -117,7 +139,7 @@ export const authSlice = createSlice({
   },
 })
 
-// export const {  } = authSlice.actions
+export const { updateBlockStatus } = authSlice.actions
 
 export const selectUser = (state: RootState) => state.auth.user
 export const selectAuth = (state: RootState) => state.auth

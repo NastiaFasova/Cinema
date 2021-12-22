@@ -43,7 +43,7 @@ const CinemaHallCard: FC<CinemaHallCardProps> = ({ cinemaHall }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Show</Button>
+        {/* <Button size="small">Show</Button> */}
       </CardActions>
     </Card>
   );

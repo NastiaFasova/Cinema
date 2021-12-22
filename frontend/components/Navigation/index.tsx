@@ -11,10 +11,9 @@ const Navigation = () => {
     <div className={styles.navigation}>
       <nav>
         <ul style={{ display: 'flex' }} className={clsx(styles.navigation__list)}>
-          <li><Link href="/">Home</Link></li>
+          {!user.blocked && <li><Link href="/">{user.email ? 'Movie Sessions' : 'Home'}</Link></li>}
           <li><Link href="/films">Films</Link></li>
-          {user.email && <li><Link href="/">Movie Sessions</Link></li>}
-          {user.email && <li><Link href="/cinema-halls">Cinema Halls</Link></li>}
+          {user.email && !user.blocked && <li><Link href="/cinema-halls">Cinema Halls</Link></li>}
         </ul>
       </nav>
     </div>

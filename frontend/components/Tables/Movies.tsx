@@ -1,37 +1,55 @@
 import * as React from 'react';
 import { DataGrid, GridSelectionModel } from '@mui/x-data-grid';
-import { FC, useEffect, useState } from 'react';
-import { ICinemaHall } from '../../types';
-import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
-import { deleteHall, deleteMovie, getMovies, selectAdmin } from '../../globalStore/slices/adminSlice';
-import { Button } from '@mui/material';
+import { FC, useState } from 'react';
+import { Box, Button } from '@mui/material';
+import { useDeleteMovieMutation, useFetchAllMoviesQuery, useUpdateMovieMutation } from '../../services/film';
+import Loader from '../Loader';
+import FormDialogWrapper from '../FormDialogWrapper';
+import MovieForm from '../Forms/MovieForm';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 80 },
   {
-    field: 'apiId',
+    field: 'imdbID',
     headerName: 'Film ID on IMDB',
-    width: 300,
+    width: 150,
   },
   {
     field: 'link',
     headerName: 'Link to the film',
-    width: 400,
+    width: 300,
   },
   {
     field: 'title',
     headerName: 'Custom Title',
     width: 200,
-  }
+  },
+  {
+    field: 'Title',
+    headerName: 'Original Title',
+    width: 200,
+  },
+  {
+    field: 'Year',
+    type: 'Number',
+    headerName: 'Year',
+    width: 100,
+  },
+  {
+    field: 'imdbRating',
+    type: 'Number',
+    headerName: 'Imdb Rating',
+    width: 150,
+  },
 ];
 
-const Halls: FC = () => {
+const Movies: FC = () => {
   const [selected, setSelected] = useState<any>();
-  const dispatch = useAppDispatch();
-  const admin = useAppSelector(selectAdmin)
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [deleteMovie, { isLoading: isDeleteLoading }] = useDeleteMovieMutation();
+  const [updateMovie, { isLoading: isUpdateLoading }] = useUpdateMovieMutation();
   const onSelect = (
     selectionModel: GridSelectionModel,
-    // _: GridCallbackDetails,
   ) => {
     setSelected(selectionModel[0]);
   };
@@ -39,31 +57,44 @@ const Halls: FC = () => {
   const handleDelete = () => {
     const isDelete = confirm("Are you sure about that?");
     if (isDelete) {
-      dispatch(deleteMovie(selected));
+      deleteMovie(selected);
     }
   }
 
-  useEffect(() => {
-    dispatch(getMovies(null));
-  }, [dispatch]);
+  const { data = [], isLoading, isError } = useFetchAllMoviesQuery('')
+
+  if (isLoading || isDeleteLoading || isUpdateLoading) return <Loader />;
 
   return (
     <div style={{ height: 600, width: '100%', marginTop: 20 }}>
       <DataGrid
-        rows={admin.movies}
+        rows={data}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
         onSelectionModelChange={onSelect}
         hideFooterSelectedRowCount
       />
+      {updateDialogOpen &&
+        <FormDialogWrapper
+          open={updateDialogOpen}
+          handleClose={() => setUpdateDialogOpen(false)}
+          title="Update Movie"
+        >
+          <MovieForm type="update" originalValues={data.find((itm) => itm.id === selected) as unknown as Record<string, string>} />
+        </FormDialogWrapper>}
       {selected &&
-        <Button sx={{ marginTop: 4, marginBottom: 10 }} value="contained" color="error" onClick={handleDelete}>
-          Remove {selected}
-        </Button>
+        <Box sx={{ marginTop: 4, paddingBottom: 5, }}>
+          <Button value="contained" color="error" onClick={handleDelete}>
+            Remove {selected}
+          </Button>
+          <Button sx={{ marginLeft: 4 }} value="outlined" color="primary" onClick={() => setUpdateDialogOpen(true)}>
+            Update
+          </Button>
+        </Box>
       }
     </div>
   );
 };
 
-export default Halls;
+export default Movies;

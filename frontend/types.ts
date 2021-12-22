@@ -11,8 +11,7 @@ export interface IFilmLink {
   title: string;
 }
 
-export interface IFilm {
-  id: number;
+export interface IFilm extends IFilmLink {
   Title: string;
   Year: number;
   Rated: string;
@@ -30,6 +29,7 @@ export interface IFilm {
   Ratings: { Source: string; Value: string; }[]
   imdbRating: string;
   imdbVotes: string;
+  imdbID: string;
 }
 
 export interface ICinemaHall {
@@ -41,16 +41,27 @@ export interface ICinemaHall {
 
 export interface ICinemaSession {
   id: number;
-  film: string;
-  hall: string;
-  date: string; //toLocaleDateString()
+  movieSessionId: number;
+  movieTitle: string;
+  cinemaHallId: string;
+  apiId: string;
+  description: string;
+  image: string;
+  price?: number;
+  showTime: string | Date; //toLocaleDateString()
 }
 
-export interface IUser {
+export interface IUserProfile {
+  id: string;
   email: string;
+  blocked: boolean;
   token: string;
   jwtToken: string;
+  firstname: string;
+  lastname: string;
   role: 'ADMIN' | 'USER' | null;
+  avatarUrl?: string;
+  bill: number;
 }
 
 export type SelectType = {

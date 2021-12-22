@@ -1,6 +1,7 @@
 @import "../../styles/variables.module.scss";
 
 .navigation {
+  display: flex;
   &__list {
     list-style-type: none;
     li {

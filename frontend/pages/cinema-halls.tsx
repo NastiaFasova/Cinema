@@ -1,20 +1,22 @@
 import React, { FC, useState } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
-import data from '../../docs/cinema_halls.json';
-import { ICinemaHall } from '../types';
+import Error from '../components/Error';
 import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import CinemaHallCard from '../components/CinemaHallCard';
+import { useFetchAllHallsQuery } from '../services/hall';
+import Loader from '../components/Loader';
 
-type FilmsPageProps = {
-  cinemaHalls: ICinemaHall[];
-}
-
-const FilmsPage: NextPage<FilmsPageProps> = ({ cinemaHalls }) => {
+const FilmsPage: NextPage = () => {
+  const { data = [], isLoading, isError } = useFetchAllHallsQuery('')
   const [select, setSelect] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelect(event.target.value as string);
   };
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <div>
@@ -37,7 +39,7 @@ const FilmsPage: NextPage<FilmsPageProps> = ({ cinemaHalls }) => {
         </Box>
 
         <Grid container spacing={2}>
-          {cinemaHalls.sort((a, b) => {
+          {!(data.length < 1) ? data.sort((a, b) => {
             if (select === 'capacityASC') {
               return a.capacity - b.capacity;
             } else if (select === 'capacityDESC') {
@@ -49,18 +51,18 @@ const FilmsPage: NextPage<FilmsPageProps> = ({ cinemaHalls }) => {
             <Grid item xs={4} key={hall.id}>
               <CinemaHallCard cinemaHall={hall} />
             </Grid>
-          ))}
+          )) : <Error title="Not Found :(" />}
         </Grid>
       </Container>
     </div>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: { cinemaHalls: data, }, // will be passed to the page component as props
-  }
-}
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   return {
+//     props: { cinemaHalls: data, }, // will be passed to the page component as props
+//   }
+// }
 
 
 export default FilmsPage

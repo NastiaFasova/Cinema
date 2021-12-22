@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import styles from './AppBar.module.scss';
 import Link from 'next/link'
 import Navigation from '../Navigation';
@@ -26,14 +26,23 @@ const AppBar = () => {
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Cineme.</Typography>
         <Navigation />
         {user.email ?
-          <Box display="flex" justifyContent="center" alignItems="center">
+          <Box style={{ display: 'flex', alignItems: 'center', minWidth: 350 }}>
             <Typography variant="caption" sx={{ marginRight: 4, fontWeight: 'bold' }}>{user.email}</Typography>
+            {user.role === 'USER' && !user.blocked &&
+              <Button variant="contained" startIcon={<AccountBalanceWalletIcon fontSize="small" />}
+                sx={{ marginRight: 4, marginLeft: 2, }}>24 $</Button>}
             <Link href="/admin" passHref>
               <a>
                 {user.role === 'ADMIN' && <Button variant="outlined" sx={{ marginRight: 4 }}>Admin Page</Button>}
               </a>
             </Link>
             <Button variant="outlined" onClick={handleLogout}>Logout</Button>
+            {/* {user.role === 'USER' &&
+              <Box display="flex" alignItems="center" ml={2} mr={4}>
+                <Button variant="contained" startIcon={<AccountBalanceWalletIcon fontSize="small" />}>
+                  0 $
+                </Button>
+              </Box>} */}
           </Box> :
           <Box>
             <Link href='/auth/login'>

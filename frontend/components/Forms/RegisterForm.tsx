@@ -25,6 +25,8 @@ const RegisterForm = () => {
     initialValues: {
       email: '',
       password: '',
+      firstname: '',
+      lastname: '',
       repeatPassword: '',
     },
     validationSchema: validationRegisterSchema,
@@ -49,10 +51,12 @@ const RegisterForm = () => {
           Choose a lot of different moovies, book a tickets and do whatever you want
         </Typography>
         <form onSubmit={formik.handleSubmit}>
-          <Input formik={formik} label="email" name="email" inputStyles={styles} />
+          <Input formik={formik} label="Firstname" name="firstname" inputStyles={styles} />
+          <Input formik={formik} label="Lastname" name="lastname" inputStyles={styles} />
+          <Input formik={formik} label="Email" name="email" inputStyles={styles} />
           <Input
             formik={formik}
-            label="password"
+            label="Password"
             type="password"
             name="password"
             inputStyles={styles}

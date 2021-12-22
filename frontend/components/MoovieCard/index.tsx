@@ -33,7 +33,7 @@ const MoovieCard: FC<MoovieCardProps> = ({ film }) => {
   return (
     <Card>
       <CardContent>
-        <Link href={`https://www.imdb.com/title/${film.id}`} passHref>
+        <Link href={`https://www.imdb.com/title/${film.imdbID}`} passHref>
           <a target="_blank">
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Box sx={styles} />
@@ -47,7 +47,11 @@ const MoovieCard: FC<MoovieCardProps> = ({ film }) => {
         </Link>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'center', paddingBottom: 5 }}>
-        <Button size="small" variant="contained">Learn More</Button>
+        <Link href={`https://www.imdb.com/title/${film.imdbID}`} passHref>
+          <a target="_blank">
+            <Button size="small" variant="contained">Show Full</Button>
+          </a>
+        </Link>
       </CardActions>
     </Card >
   );

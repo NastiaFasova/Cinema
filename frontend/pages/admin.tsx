@@ -6,12 +6,15 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
 import { Container } from '@mui/material';
-import AddMovieForm from '../components/Forms/AddMovieForm';
-import AddHallForm from '../components/Forms/AddHallForm';
+import MovieForm from '../components/Forms/MovieForm';
+import HallForm from '../components/Forms/HallForm';
 import Halls from '../components/Tables/Halls';
 import Movies from '../components/Tables/Movies';
-import AddSessionForm from '../components/Forms/AddSessionForm';
+import SessionForm from '../components/Forms/SessionForm';
 import Sessions from '../components/Tables/Sessions';
+import FormWrapper from '../components/Forms';
+import Link from 'next/link';
+import Users from '../components/Tables/Users';
 
 const AdminPage: NextPage = () => {
   const [value, setValue] = useState('1');
@@ -29,19 +32,43 @@ const AdminPage: NextPage = () => {
               <Tab label="Movies Control" value="1" />
               <Tab label="Cinema Halls Control" value="2" />
               <Tab label="Sessions Control" value="3" />
+              <Tab label="Users Control" value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
-            <AddMovieForm />
+            <FormWrapper
+              title="Add a new movie"
+              subtitleNode={
+                <>
+                  You can find any on
+                  <Link href="https://www.imdb.com" passHref>
+                    <a target="_blank"><span style={{ color: "#999999", marginLeft: 6 }}>IMDB</span></a>
+                  </Link>
+                </>
+              }
+            >
+              <MovieForm />
+            </FormWrapper>
             <Movies />
           </TabPanel>
           <TabPanel value="2">
-            <AddHallForm />
+            <FormWrapper
+              title="Add a new hall"
+            >
+              <HallForm />
+            </FormWrapper>
             <Halls />
           </TabPanel>
           <TabPanel value="3">
-            <AddSessionForm />
+            <FormWrapper
+              title="Add a new movie session"
+            >
+              <SessionForm />
+            </FormWrapper>
             <Sessions />
+          </TabPanel>
+          <TabPanel value="4">
+            <Users />
           </TabPanel>
         </TabContext>
       </Box>
