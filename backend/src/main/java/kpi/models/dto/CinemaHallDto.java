@@ -15,4 +15,6 @@ public class CinemaHallDto {
     private int capacity;
     @Size(min = 10, max = 150)
     private String description;
+    @Size(min = 1, max = 100)
+    private String title;
 }

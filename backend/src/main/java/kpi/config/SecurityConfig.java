@@ -20,11 +20,9 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @EnableWebSecurity
 @Configuration
@@ -39,13 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -58,27 +49,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                .sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and()
-                    .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
-                    .csrf().ignoringAntMatchers("/**")
-                .and()
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/movies/**",
+                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(
+                        "/v2/api-docs",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        "/swagger.json", "/login")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/movies/",
+                        "/movie-sessions/", "/cinema-halls/")
+                .hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/movies/**",
                         "/movie-sessions/**", "/cinema-halls/**")
-                    .hasRole("ADMIN")
-                    .antMatchers(HttpMethod.POST, "/orders/complete",
-                        "/shopping-carts/**")
-                    .hasRole("USER")
-                    .antMatchers(HttpMethod.GET,  "/hello", "/movies",
-                        "/movie-sessions", "/cinema-halls", "/orders")
-                    .hasAnyRole("USER", "ADMIN")
-                    .antMatchers("/login")
-                    .authenticated()
+                .hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/users",
+                        "/users/block/**", "/users/unblock/**")
+                .hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/movies/",
+                        "/movie-sessions/", "/cinema-halls/")
+                .hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/orders/complete",
+                        "/shopping-carts/")
+                .hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/hello", "/movies",
+                        "/movie-sessions", "/cinema-halls", "/orders", "/movie-sessions/available")
+                .hasAnyRole("USER", "ADMIN")
+                .anyRequest()
+                .authenticated()
                 .and()
-                    .httpBasic()
-                    .authenticationEntryPoint(((request, response, e) -> resolver.resolveException(request, response, null, e)));
-        ;
+                .httpBasic()
+                .authenticationEntryPoint(((request, response, e) -> resolver.resolveException(request, response, null, e)));
     }
 
     @Bean
@@ -87,7 +92,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/register");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/register", "/movies");
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.setAllowedMethods(Arrays.asList("*"));
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }

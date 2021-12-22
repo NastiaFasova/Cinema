@@ -8,7 +8,6 @@ import org.springframework.security.web.csrf.InvalidCsrfTokenException;
 import org.springframework.security.web.csrf.MissingCsrfTokenException;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -30,7 +29,6 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
     }
 
     @Override
-    @CrossOrigin
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         request.setAttribute(HttpServletResponse.class.getName(), response);
@@ -43,7 +41,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
         request.setAttribute(CsrfToken.class.getName(), csrfToken);
         request.setAttribute(csrfToken.getParameterName(), csrfToken);
-        if (request.getServletPath().equals("/auth/login")) {
+        if (request.getServletPath().equals("/login")) {
             try {
                 filterChain.doFilter(request, response);
             } catch (Exception e) {

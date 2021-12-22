@@ -22,4 +22,10 @@ public class Ticket {
 
     @ManyToOne
     private User user;
+
+    private Integer maxCount;
+
+    private Integer currentCount;
+
+    private Double price;
 }

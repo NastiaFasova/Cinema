@@ -1,5 +1,6 @@
 package kpi.service.impl;
 
+import kpi.models.CinemaHall;
 import kpi.repository.MovieSessionRepository;
 import kpi.models.MovieSession;
 import kpi.service.MovieSessionService;
@@ -29,7 +30,29 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     }
 
     @Override
+    public MovieSession add(MovieSession session, String id) {
+        MovieSession current = get(Long.parseLong(id));
+        current.setCurrentTicketCount(session.getCurrentTicketCount());
+        current.setMovie(session.getMovie());
+        current.setCinemaHall(session.getCinemaHall());
+        current.setShowTime(session.getShowTime());
+        current.setMaxTicketCount(session.getMaxTicketCount());
+        return movieSessionRepository.save(current);
+    }
+
+    @Override
     public MovieSession get(Long id) {
         return movieSessionRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        movieSessionRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public List<MovieSession> getAll() {
+        return movieSessionRepository.findAll();
     }
 }

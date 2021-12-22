@@ -15,4 +15,7 @@ public interface MovieSessionRepository extends JpaRepository<MovieSession, Long
             + "and ms.showTime > :dateStart "
             + "and ms.showTime < :dateEnd")
     List<MovieSession> getAvailableSessions(Long movieId, LocalDateTime dateStart, LocalDateTime dateEnd);
+
+    @Query("from MovieSession ms JOIN FETCH ms.movie JOIN FETCH ms.cinemaHall")
+    List<MovieSession> findAll();
 }

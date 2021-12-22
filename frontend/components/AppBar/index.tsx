@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import styles from './AppBar.module.scss';
 import Link from 'next/link'
@@ -8,9 +8,10 @@ import { Box, Button, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '../../globalStore/hooks';
 import { logout, selectUser } from '../../globalStore/slices/authSlice';
+import AccountTopupForm from '../AccountTopupForm';
 
 const AppBar = () => {
-
+  const [openTopUpForm, setOpenTopUpForm] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
@@ -22,6 +23,7 @@ const AppBar = () => {
 
   return (
     <Container>
+      {openTopUpForm && <AccountTopupForm open={openTopUpForm} setOpen={setOpenTopUpForm} />}
       <Box sx={{ display: 'flex', alignItems: 'center', paddingTop: 5, justifyContent: 'space-between' }} className={styles.appbar}>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Cineme.</Typography>
         <Navigation />
@@ -29,7 +31,10 @@ const AppBar = () => {
           <Box style={{ display: 'flex', alignItems: 'center', minWidth: 350 }}>
             <Typography variant="caption" sx={{ marginRight: 4, fontWeight: 'bold' }}>{user.email}</Typography>
             {user.role === 'USER' && !user.blocked &&
-              <Button variant="contained" startIcon={<AccountBalanceWalletIcon fontSize="small" />}
+              <Button
+                onClick={() => setOpenTopUpForm(true)}
+                variant="contained"
+                startIcon={<AccountBalanceWalletIcon fontSize="small" />}
                 sx={{ marginRight: 4, marginLeft: 2, }}>24 $</Button>}
             <Link href="/admin" passHref>
               <a>

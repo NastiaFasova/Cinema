@@ -9,9 +9,11 @@ import kpi.service.MovieSessionService;
 import kpi.service.ShoppingCartService;
 import kpi.service.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/shopping-carts")
 public class ShoppingCartController {
@@ -32,10 +34,11 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/add-movie-session")
-    public void addMovieSession(Authentication authentication, Long movieSessionId) {
+    public ShoppingCartResponseDto addMovieSession(Authentication authentication, Long movieSessionId) {
         User user = userService.getByEmail(authentication.getName());
         MovieSession movieSession = movieSessionService.get(movieSessionId);
-        shoppingCartService.addSession(movieSession, user);
+        return shoppingCartMapper.getShoppingCartResponseDto(shoppingCartService
+                .addSession(movieSession, user));
     }
 
     @GetMapping("/by-user")

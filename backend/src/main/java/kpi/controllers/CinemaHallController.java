@@ -10,7 +10,6 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/cinema-halls")
 public class CinemaHallController {
@@ -25,8 +24,13 @@ public class CinemaHallController {
     }
 
     @PostMapping
-    public void add(@RequestBody @Valid CinemaHallDto cinemaHallRequestDto) {
-        cinemaHallService.add(cinemaHallMapper.getCinemaHall(cinemaHallRequestDto));
+    public CinemaHall add(@RequestBody @Valid CinemaHallDto cinemaHallRequestDto) {
+        return cinemaHallService.add(cinemaHallMapper.getCinemaHall(cinemaHallRequestDto));
+    }
+
+    @PatchMapping("/{id}")
+    public CinemaHall update(@RequestBody @Valid CinemaHallDto cinemaHallRequestDto, @PathVariable("id") String id) {
+        return cinemaHallService.add(cinemaHallMapper.getCinemaHall(cinemaHallRequestDto), id);
     }
 
     @GetMapping
@@ -35,6 +39,11 @@ public class CinemaHallController {
         return cinemaHalls.stream()
                 .map(cinemaHallMapper::getCinemaHallResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteById(@PathVariable Long id) {
+        return cinemaHallService.deleteById(id);
     }
 }
 

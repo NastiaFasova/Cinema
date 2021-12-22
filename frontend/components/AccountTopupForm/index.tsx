@@ -28,9 +28,9 @@ const AccountTopupForm: FC<AccountTopupFormProps> = ({ open, setOpen }) => {
     <FormDialogWrapper
       open={open}
       handleClose={() => setOpen(false)}
-      title="Update Movie"
+      title=""
     >
-      <Box component="form" onSubmit={formik.handleSubmit} sx={formStyles}>
+      <Box component="form" onSubmit={formik.handleSubmit} sx={formStyles as any}>
         <Input formik={formik} label="Description" name="description" />
         <SubmitBtn title="Top up an account" />
       </Box>

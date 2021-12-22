@@ -1,5 +1,6 @@
 package kpi.service.impl;
 
+import kpi.exception.NoFreePlaceException;
 import kpi.repository.ShoppingCartRepository;
 import kpi.repository.TicketRepository;
 import kpi.models.MovieSession;
@@ -22,14 +23,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket();
-        ticket.setUser(user);
-        ticket.setMovieSession(movieSession);
-        ticketRepository.save(ticket);
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);
-        shoppingCart.getTickets().add(ticket);
-        shoppingCartRepository.save(shoppingCart);
+    public ShoppingCart addSession(MovieSession movieSession, User user) {
+        if (movieSession.getMaxTicketCount() - movieSession.getCurrentTicketCount() > 0) {
+            Ticket ticket = new Ticket();
+            ticket.setUser(user);
+            ticket.setMovieSession(movieSession);
+            ticketRepository.save(ticket);
+            ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);
+            shoppingCart.getTickets().add(ticket);
+            movieSession.setCurrentTicketCount(movieSession.getCurrentTicketCount() - 1);
+            return shoppingCartRepository.save(shoppingCart);
+        }
+        else throw new NoFreePlaceException("There is no free place for this movie-session");
     }
 
     @Override

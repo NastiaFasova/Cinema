@@ -21,4 +21,5 @@ public class CinemaHall {
     private Long id;
     private int capacity;
     private String description;
+    private String title;
 }

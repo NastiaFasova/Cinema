@@ -9,6 +9,7 @@ public class CinemaHallMapper {
     public CinemaHallDto getCinemaHallResponseDto(CinemaHall cinemaHall) {
         CinemaHallDto cinemaHallResponseDto = new CinemaHallDto();
         cinemaHallResponseDto.setCapacity(cinemaHall.getCapacity());
+        cinemaHallResponseDto.setTitle(cinemaHall.getTitle());
         cinemaHallResponseDto.setId(cinemaHall.getId());
         cinemaHallResponseDto.setDescription(cinemaHall.getDescription());
         return cinemaHallResponseDto;
@@ -18,6 +19,7 @@ public class CinemaHallMapper {
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(cinemaHallRequestDto.getCapacity());
         cinemaHall.setDescription(cinemaHallRequestDto.getDescription());
+        cinemaHall.setTitle(cinemaHallRequestDto.getTitle());
         return cinemaHall;
     }
 }

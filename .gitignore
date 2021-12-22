@@ -1,9 +1,0 @@
-backend/.idea/*
-.idea/*
-backend/*.iml
-backend/target*
-backend/logs/*
-
-# Front part
-node_modules
-

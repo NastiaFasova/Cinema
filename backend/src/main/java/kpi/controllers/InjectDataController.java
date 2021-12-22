@@ -7,9 +7,7 @@ import kpi.service.UserService;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin
 @Controller
 public class InjectDataController {
     private final RoleService roleService;
@@ -27,7 +25,7 @@ public class InjectDataController {
         userRole.setRoleName(Role.RoleName.USER);
         User user = new User();
         user.setEmail("user@ukr.net");
-        user.setPassword("1111");
+        user.setPassword("111111");
         user.setRoles(Set.of(userRole));
         roleService.add(userRole);
         userService.add(user);
@@ -36,7 +34,7 @@ public class InjectDataController {
         adminRole.setRoleName(Role.RoleName.ADMIN);
         User admin = new User();
         admin.setEmail("admin@gmail.com");
-        admin.setPassword("9999");
+        admin.setPassword("999999");
         admin.setRoles(Set.of(adminRole));
         roleService.add(adminRole);
         userService.add(admin);

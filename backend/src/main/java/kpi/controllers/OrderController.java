@@ -13,7 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/orders")
@@ -33,10 +37,10 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public void complete(@RequestBody @Valid OrderRequestDto orderRequestDto) {
+    public OrderResponseDto complete(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         User user = userService.get(orderRequestDto.getUserId());
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
-        orderService.completeOrder(shoppingCart.getTickets(), user);
+        return orderMapper.getOrderResponseDto(orderService.completeOrder(shoppingCart.getTickets(), user));
     }
 
     @GetMapping

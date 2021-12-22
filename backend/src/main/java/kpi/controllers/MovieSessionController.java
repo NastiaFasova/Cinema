@@ -12,8 +12,8 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
+@CrossOrigin
 @RequestMapping("/movie-sessions")
 public class MovieSessionController {
 
@@ -27,16 +27,37 @@ public class MovieSessionController {
     }
 
     @PostMapping
-    public void add(@RequestBody @Valid MovieSessionRequestDto movieSessionRequestDto) {
-        movieSessionService.add(movieSessionMapper.getMovieSession(movieSessionRequestDto));
+    public MovieSessionResponseDto add(@RequestBody @Valid MovieSessionRequestDto movieSessionRequestDto) {
+        return movieSessionMapper.getMovieSessionResponseDto(movieSessionService
+                .add(movieSessionMapper.getMovieSession(movieSessionRequestDto)));
     }
 
     @GetMapping("/available")
     public List<MovieSessionResponseDto> getAll(@RequestParam (name = "movieId") Long id,
-                                                @RequestParam (name = "date") LocalDate showTime) {
-        List<MovieSession> movieSessions = movieSessionService.getAvailableSessions(id, showTime);
+                                                @RequestParam (name = "date") String showTime) {
+        List<MovieSession> movieSessions = movieSessionService.getAvailableSessions(id, LocalDate.parse(showTime));
         return movieSessions.stream()
                 .map(movieSessionMapper::getMovieSessionResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @PatchMapping("/{id}")
+    public MovieSessionResponseDto update(@RequestBody @Valid MovieSessionRequestDto movieSessionRequestDto,
+                                          @PathVariable("id") String id) {
+        return movieSessionMapper.getMovieSessionResponseDto(movieSessionService
+                .add(movieSessionMapper.getMovieSession(movieSessionRequestDto), id));
+    }
+
+    @GetMapping
+    public List<MovieSessionResponseDto> getAll() {
+        List<MovieSession> movieSessions = movieSessionService.getAll();
+        return movieSessions.stream()
+                .map(movieSessionMapper::getMovieSessionResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteById(@PathVariable Long id) {
+        return movieSessionService.deleteById(id);
     }
 }

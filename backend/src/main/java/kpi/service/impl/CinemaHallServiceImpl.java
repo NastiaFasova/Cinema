@@ -22,6 +22,15 @@ public class CinemaHallServiceImpl implements CinemaHallService {
     }
 
     @Override
+    public CinemaHall add(CinemaHall cinemaHall, String id) {
+        CinemaHall current = get(Long.parseLong(id));
+        current.setTitle(cinemaHall.getTitle());
+        current.setCapacity(cinemaHall.getCapacity());
+        current.setDescription(cinemaHall.getDescription());
+        return cinemaHallRepository.save(current);
+    }
+
+    @Override
     public List<CinemaHall> getAll() {
         return cinemaHallRepository.findAll();
     }
@@ -29,5 +38,11 @@ public class CinemaHallServiceImpl implements CinemaHallService {
     @Override
     public CinemaHall get(Long id) {
         return cinemaHallRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        cinemaHallRepository.deleteById(id);
+        return true;
     }
 }

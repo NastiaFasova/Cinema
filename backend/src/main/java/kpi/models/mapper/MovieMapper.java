@@ -10,14 +10,16 @@ public class MovieMapper {
         MovieDto movieDto = new MovieDto();
         movieDto.setTitle(movie.getTitle());
         movieDto.setId(movie.getId());
-        movieDto.setDescription(movie.getDescription());
+        movieDto.setApiId(movie.getApiId());
+        movieDto.setLink(movie.getLink());
         return movieDto;
     }
 
     public Movie getMovie(MovieDto movieDto) {
         Movie movie = new Movie();
         movie.setTitle(movieDto.getTitle());
-        movie.setDescription(movieDto.getDescription());
+        movie.setLink(movieDto.getLink());
+        movie.setApiId(movieDto.getApiId());
         return movie;
     }
 }
