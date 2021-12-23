@@ -35,6 +35,12 @@ const Users: FC = () => {
       width: 200,
     },
     {
+      field: 'bill',
+      type: 'Number',
+      headerName: 'Amount of money',
+      width: 200,
+    },
+    {
       field: 'blocked',
       headerName: 'Is blocked?',
       width: 150,

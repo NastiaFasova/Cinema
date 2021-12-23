@@ -35,7 +35,7 @@ const AppBar = () => {
                 onClick={() => setOpenTopUpForm(true)}
                 variant="contained"
                 startIcon={<AccountBalanceWalletIcon fontSize="small" />}
-                sx={{ marginRight: 4, marginLeft: 2, }}>24 $</Button>}
+                sx={{ marginRight: 4, marginLeft: 2, }}>{user.bill} $</Button>}
             <Link href="/admin" passHref>
               <a>
                 {user.role === 'ADMIN' && <Button variant="outlined" sx={{ marginRight: 4 }}>Admin Page</Button>}

@@ -27,14 +27,19 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
   const { data: movies = [], isLoading: moviesLoading, isError: moviesError } = useFetchAllMoviesQuery('')
   const { data: halls = [], isLoading: hallsLoading, isError: hallsError } = useFetchAllHallsQuery('')
 
-  let initialValues = originalValues ? originalValues : {
-    movieTitle: '',
-    cinemaHallId: '',
-    price: 0,
-    currentTicketCount: 0,
-    maxTicketCount: 0,
-    showTime: new Date(),
-  };
+  let initialValues: any = originalValues ?
+    {
+      ...originalValues,
+      cinemaHallId: originalValues.cinemaHallId.toString(),
+      showTime: new Date(originalValues.showTime),
+    } : {
+      movieTitle: '',
+      cinemaHallId: '',
+      price: 0,
+      currentTicketCount: 0,
+      maxTicketCount: 0,
+      showTime: new Date(),
+    };
 
   const handleChangeDate = (date: Date | null) => {
     if (!date) return;
@@ -46,7 +51,8 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
     validationSchema: validationMovieSessionSchema,
     onSubmit: ({ id, movieTitle, showTime, cinemaHallId, maxTicketCount, currentTicketCount, price }) => {
       const body =
-        { movieTitle, showTime: showTime.toISOString().slice(0, -1), cinemaHallId, maxTicketCount, currentTicketCount, price }
+        { movieTitle, showTime: showTime?.toISOString().slice(0, -1), cinemaHallId, maxTicketCount, currentTicketCount, price }
+      console.log('body', body);
       if (type === 'create') {
         createMovieSession(body);
       } else {
@@ -70,8 +76,7 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
 
   useEffect(() => {
     if (isError || isUpdateError || moviesError || moviesError) {
-      console.log('ERROR', error);
-      dispatch(setError('Something bad happens'))
+      dispatch(setError(error.data.info))
     };
   }, [dispatch, error, isError, isUpdateError, moviesError])
 
@@ -86,14 +91,6 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
       }
       <Box>
         <Input formik={formik} label="Tickets price" name="price" value={originalValues?.price} />
-      </Box>
-      <Box>
-        <Input
-          formik={formik}
-          label="Max Tickets Count"
-          name="maxTicketCount"
-          disabled
-        />
       </Box>
       <Autocomplete
         disablePortal
@@ -118,9 +115,29 @@ const SessionForm: FC<SessionFormProps> = ({ type = 'create', originalValues }) 
           value: hall.title,
         }))}
       />
+
+      <Box>
+        <Input
+          formik={formik}
+          label="Max Tickets Count"
+          name="maxTicketCount"
+          disabled
+        />
+      </Box>
+      <Box>
+        <Input
+          formik={formik}
+          label="Current ticket count"
+          name="currentTicketCount"
+          disabled
+          value={originalValues?.price}
+        />
+      </Box>
+
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DesktopDatePicker
           label="Select Date"
+          minDate={new Date()}
           inputFormat="MM/dd/yyyy"
           value={formik.values['showTime']}
           onChange={handleChangeDate}

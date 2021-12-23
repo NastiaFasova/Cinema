@@ -1,21 +1,24 @@
-import { Button } from '@mui/material';
-import { ICartItem } from '../../types';
+import { Button, Chip } from '@mui/material';
+import { ICartItem, ICinemaSession } from '../../types';
 import styles from './Item.module.scss';
+import clsx from 'clsx';
 
 type Props = {
-  item: ICartItem;
+  item: ICinemaSession;
   handleAddToCart: (clickedItem: ICartItem) => void;
 };
 
 const Item: React.FC<Props> = ({ item, handleAddToCart }) => (
-  <div className={styles.wrapper}>
+  <div className={clsx(styles.wrapper)}>
     <div className={styles.wrapper__img}><img src={item.image} alt={item.title} /></div>
-    <div>
-      <h3>{item.title}</h3>
-      <p>{item.description}</p>
+    <div className={styles.wrapper__mainContent}>
+      <Chip label={item.showTime} color="primary" sx={{ height: 20, width: 110 }} />
+      <h3>{item.movieTitle}</h3>
+      <p>{item.description?.slice(0, 90) + '...'}</p>
       <h3>${item.price}</h3>
+      <span>Tickets: {item.currentTicketCount}/{item.maxTicketCount}</span>
     </div>
-    <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
+    <Button onClick={() => handleAddToCart(item as any)}>Add to cart</Button>
   </div>
 );
 

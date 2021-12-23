@@ -15,7 +15,7 @@ const MovieSession: FC = () => {
     {
       field: 'movieTitle',
       headerName: 'Film Title',
-      width: 300,
+      width: 220,
     },
     {
       field: 'cinemaHallId',
@@ -33,6 +33,12 @@ const MovieSession: FC = () => {
       headerName: 'Current Tickets Count',
       type: 'number',
       width: 180,
+    },
+    {
+      field: 'price',
+      headerName: 'Price',
+      type: 'number',
+      width: 100,
     },
     {
       field: 'showTime',
@@ -72,7 +78,7 @@ const MovieSession: FC = () => {
     }
   }
 
-  const { data = [], isLoading, isError } = useFetchAllMovieSessionsQuery('')
+  const { data = [], isLoading, isError, error } = useFetchAllMovieSessionsQuery('')
 
   if (isLoading || isDeleteLoading) return <Loader />;
 
@@ -82,8 +88,8 @@ const MovieSession: FC = () => {
         rows={data}
         rowHeight={52 * 5}
         columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
         onSelectionModelChange={onSelect}
         hideFooterSelectedRowCount
       />
@@ -93,7 +99,10 @@ const MovieSession: FC = () => {
           handleClose={() => setUpdateDialogOpen(false)}
           title="Update Movie"
         >
-          <SessionForm type="update" originalValues={data.find((itm) => itm.id === selected) as unknown as Record<string, string>} />
+          <SessionForm
+            type="update"
+            originalValues={data.find((itm) => itm.movieSessionId === selected) as unknown as Record<string, string>}
+          />
         </FormDialogWrapper>}
       {selected &&
         <Box sx={{ marginTop: 4, paddingBottom: 5, }}>

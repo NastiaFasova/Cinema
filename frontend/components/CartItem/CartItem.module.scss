@@ -9,14 +9,19 @@
   div {
     flex: 1;
   }
-  .information,
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
+}
+
+.information,
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.imageWrapper {
   img {
     max-width: 80px;
     object-fit: cover;
     margin-left: 40px;
+    margin-top: 10px;
   }
 }

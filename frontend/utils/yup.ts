@@ -32,7 +32,7 @@ export const validationRegisterSchema = Yup.object({
 
 export const validationMovieLinkSchema = Yup.object({
   apiId: Yup.string().required('Required')
-    .length(9, 'The length is not matching for template')
+    .min(9, 'The length is not matching for template')
     .matches(/^tt+\d/, 'Must starts with "tt" and ends with numbers'),
   link: Yup.string().required('Required'),
   title: Yup.string().required('Required'),

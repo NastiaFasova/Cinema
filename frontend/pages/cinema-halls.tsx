@@ -39,7 +39,7 @@ const FilmsPage: NextPage = () => {
         </Box>
 
         <Grid container spacing={2}>
-          {!(data.length < 1) ? data.sort((a, b) => {
+          {!(data.length < 1) ? data.slice().sort((a, b) => {
             if (select === 'capacityASC') {
               return a.capacity - b.capacity;
             } else if (select === 'capacityDESC') {

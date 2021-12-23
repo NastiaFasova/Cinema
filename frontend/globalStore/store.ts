@@ -6,6 +6,7 @@ import adminReducer from './slices/adminSlice';
 import { moviesApi } from '../services/film';
 import { usersApi } from '../services/user';
 import { hallsApi } from '../services/hall';
+import { shoppingCartApi } from '../services/shopping-cart';
 import { movieSessionsApi } from '../services/movie-session';
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     [hallsApi.reducerPath]: hallsApi.reducer,
     [movieSessionsApi.reducerPath]: movieSessionsApi.reducer,
+    [shoppingCartApi.reducerPath]: shoppingCartApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -25,6 +27,7 @@ export const store = configureStore({
       .concat(moviesApi.middleware)
       .concat(usersApi.middleware)
       .concat(movieSessionsApi.middleware)
+      .concat(shoppingCartApi.middleware)
       .concat(hallsApi.middleware),
 })
 

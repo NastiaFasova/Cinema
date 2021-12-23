@@ -39,6 +39,18 @@ export interface ICinemaHall {
   description: string;
 }
 
+export interface IUserTickets {
+  id: number; // user id
+  tickets: { id: number; movieSessionId: number; }[]
+  orderDate?: string;
+}
+
+export interface IUserOrders {
+  id: number; // user id
+  tickets: { id: number; movieSessionId: number; }[]
+}
+
+
 export interface ICinemaSession {
   id: number;
   movieSessionId?: number;
@@ -73,12 +85,6 @@ export type SelectType = {
 
 export type AuthFormsType = 'login' | 'register';
 
-export interface ICartItem {
-  id: number;
-  category: string;
-  description: string;
-  image: string;
-  price: number;
-  title: string;
+export interface ICartItem extends ICinemaSession {
   amount: number;
 };

@@ -18,7 +18,7 @@ export const movieSessionsApi = createApi({
         // This is bad. Will try to solve this another way
         const movieSessionsWithData = await Promise.all(sessions.map((async (s) => {
           const { data } = await axios.get<IFilm>(`${process.env.NEXT_PUBLIC_API_URL}${s.apiId}`);
-          return { ...s, description: data.Plot, image: data.Poster, id: s.movieSessionId };
+          return { ...s, description: data.Plot, image: data.Poster, id: Number(s.movieSessionId) };
         })));
         return movieSessionsWithData as ICinemaSession[];
       },

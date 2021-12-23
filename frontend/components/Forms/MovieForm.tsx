@@ -56,7 +56,7 @@ const MovieForm: FC<MovieFormProps> = ({ type = 'create', originalValues }) => {
   useEffect(() => {
     if (isError || isUpdateError) {
       console.log('ERROR', error);
-      dispatch(setError('Something bad happens'))
+      dispatch(setError(error?.data?.info))
     };
   }, [dispatch, error, isError, isUpdateError])
 

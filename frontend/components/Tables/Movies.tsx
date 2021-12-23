@@ -31,13 +31,11 @@ const columns = [
   },
   {
     field: 'Year',
-    type: 'Number',
     headerName: 'Year',
     width: 100,
   },
   {
     field: 'imdbRating',
-    type: 'Number',
     headerName: 'Imdb Rating',
     width: 150,
   },

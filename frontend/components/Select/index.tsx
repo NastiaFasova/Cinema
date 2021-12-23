@@ -59,6 +59,7 @@ const CustomSelect: React.FC<SelectProps> = ({
   keyValuePairArr,
   customHandleChange,
 }) => {
+  console.log('keyValuePairArr', keyValuePairArr);
   const theme = useTheme();
   return (
     <Box display="flex" justifyContent="center" width="100%">

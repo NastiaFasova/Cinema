@@ -1,6 +1,10 @@
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import React, { FC } from 'react'
+import { useAppDispatch, useAppSelector } from '../../globalStore/hooks'
+import { setSuccess } from '../../globalStore/slices/alertSlice'
+import { selectUser, updateAccountBalance } from '../../globalStore/slices/authSlice'
+import { useTopUpUserAccountMutation } from '../../services/user'
 import { validationAccountTopUpSchema } from '../../utils/yup'
 import FormDialogWrapper from '../FormDialogWrapper'
 import { formStyles } from '../Forms/styles'
@@ -13,6 +17,9 @@ type AccountTopupFormProps = {
 }
 
 const AccountTopupForm: FC<AccountTopupFormProps> = ({ open, setOpen }) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const [topUpAccount, { isLoading }] = useTopUpUserAccountMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -20,7 +27,11 @@ const AccountTopupForm: FC<AccountTopupFormProps> = ({ open, setOpen }) => {
     },
     validationSchema: validationAccountTopUpSchema,
     onSubmit: ({ money }) => {
-
+      topUpAccount(money).unwrap().then(() => {
+        dispatch(updateAccountBalance(Number(money)));
+        dispatch(setSuccess("Account bill was successfully updated"));
+        setOpen(false);
+      });
     },
   });
 

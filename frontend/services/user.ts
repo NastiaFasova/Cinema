@@ -67,6 +67,20 @@ export const usersApi = createApi({
         queryFulfilled.then(() => dispatch(setSuccess('Successfully deleted!'))).catch();
       },
     }),
+    topUpUserAccount: builder.mutation<{ email: string; amountOfMoney: number; id: string }, number>({
+      query: (amountOfMoney) => ({
+        url: `/bill`,
+        method: 'PATCH',
+        headers: getHeaders(),
+        body: {
+          amountOfMoney,
+        },
+      }),
+      invalidatesTags: ['Users'],
+      onQueryStarted(_, { dispatch, queryFulfilled }) {
+        queryFulfilled.then(() => dispatch(setSuccess('Successfully updated!'))).catch();
+      },
+    }),
   }),
 })
 
@@ -76,5 +90,6 @@ export const {
   useDeleteUserMutation,
   useBlockUserMutation,
   useUnblockUserMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useTopUpUserAccountMutation,
 } = usersApi;

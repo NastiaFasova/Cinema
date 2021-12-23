@@ -32,8 +32,8 @@ export const loginUser = createAsyncThunk(
     const token = btoa(`${form.email}:${form.password}`);
     const { data, error, headers } = await postAPI('login', form, token);
     if (error) {
-      thunkAPI.dispatch(setError("Error happen"));
-      throw new Error(error.error);
+      thunkAPI.dispatch(setError("Bad credentials"));
+      throw new Error(error?.error);
     }
 
     const user: IUserProfile = {
@@ -60,8 +60,8 @@ export const registerUser = createAsyncThunk(
     const { data: registeredUser, error: regErr } = await postAPI('register', form);
     const { data, error, headers } = await postAPI('login', form, token);
     if (error || regErr) {
-      thunkAPI.dispatch(setError("Error happen"));
-      throw new Error(error.error);
+      thunkAPI.dispatch(setError("Bad credentials"));
+      throw new Error(error?.error);
     }
 
     thunkAPI.dispatch(setSuccess(`User registered with email ${form.email}`));
@@ -95,6 +95,10 @@ export const authSlice = createSlice({
   reducers: {
     updateBlockStatus(state, action: PayloadAction<boolean>) {
       state.user.blocked = action.payload;
+      localStorage.setItem('user', JSON.stringify(state.user))
+    },
+    updateAccountBalance(state, action: PayloadAction<number>) {
+      state.user.bill += action.payload;
       localStorage.setItem('user', JSON.stringify(state.user))
     },
   },
@@ -139,7 +143,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const { updateBlockStatus } = authSlice.actions
+export const { updateBlockStatus, updateAccountBalance } = authSlice.actions
 
 export const selectUser = (state: RootState) => state.auth.user
 export const selectAuth = (state: RootState) => state.auth

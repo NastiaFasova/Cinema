@@ -11,7 +11,7 @@ type CinemaHallCardProps = {
 const CinemaHallCard: FC<CinemaHallCardProps> = ({ cinemaHall }) => {
 
   const styles: any = {
-    height: 400, borderRadius: 2,
+    mineight: 400, borderRadius: 2,
     boxShadow: `1px 1px 10px ${variables.textColor}`,
     cursor: 'pointer',
     position: 'relative',
@@ -30,7 +30,7 @@ const CinemaHallCard: FC<CinemaHallCardProps> = ({ cinemaHall }) => {
   }
 
   return (
-    <Card>
+    <Card sx={{ minHeight: 200 }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Capacity: <span style={{ fontWeight: 'bold' }}>{cinemaHall.capacity}</span>
@@ -38,7 +38,7 @@ const CinemaHallCard: FC<CinemaHallCardProps> = ({ cinemaHall }) => {
         <Typography variant="h5" component="div">
           {cinemaHall.title}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{ mt: 2 }}>
           {cinemaHall.description}
         </Typography>
       </CardContent>
