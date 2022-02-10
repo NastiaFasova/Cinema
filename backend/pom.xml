@@ -19,7 +19,7 @@
         </maven.checkstyle.plugin.configLocation>
         <spring.version>5.2.6.RELEASE</spring.version>
         <spring.security.version>5.3.3.RELEASE</spring.security.version>
-        <hibernate.version>5.4.5.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
     </properties>
 
     <dependencies>
